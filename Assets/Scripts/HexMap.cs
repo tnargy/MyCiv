@@ -35,8 +35,20 @@ public class HexMap : MonoBehaviour
             return null;
         }
 
-        Hex hex = hexes[x % mapY, y];
-        return hex ?? null;
+        x %= mapY;
+        if (x < 0)
+            x += mapY;
+
+        try
+        {
+            Hex hex = hexes[x, y];
+            return hex ?? null;
+        }
+        catch
+        {
+            Debug.LogError($"GetHexAt: ({x}, {y})");
+            return null;
+        }
     }
 
     virtual public void GenerateMap()
@@ -44,13 +56,15 @@ public class HexMap : MonoBehaviour
         hexes = new Hex[mapX, mapY];
         hexToGameObjectMap = new Dictionary<Hex, GameObject>();
 
-        //Generate Ocean Map
+        // Generate Ocean Map
         for (int col = 0; col < mapX; col++)
         {
             for (int row = 0; row < mapY; row++)
             {
-                Hex h = new Hex(col, row);
-                h.Elevation = -1f;
+                Hex h = new Hex(col, row)
+                {
+                    Elevation = -0.5f
+                };
                 Vector3 pos = PositionFromCamera(h);
 
                 GameObject hexObj = Instantiate(
@@ -58,12 +72,11 @@ public class HexMap : MonoBehaviour
                     pos,
                     Quaternion.identity,
                     transform);
-                hexObj.name = string.Format("Hex: {0}, {1}", col, row);
+                hexObj.name = $"Hex: {col}, {row}";
                 hexObj.GetComponent<HexBehavior>().hex = h;
                 hexObj.GetComponent<HexBehavior>().hexMap = this;
 
-                hexObj.GetComponentInChildren<TextMeshPro>().text =
-                    string.Format("{0}, {1}", col, row);
+                hexObj.GetComponentInChildren<TextMeshPro>().text = $"Hex: {col}, {row}";
 
                 hexes[col, row] = h;
                 hexToGameObjectMap[h] = hexObj;
@@ -81,7 +94,7 @@ public class HexMap : MonoBehaviour
 
         Vector3 position = h.Position();
 
-        //Goal between -0.5 to 0.5
+        // Goal between -0.5 to 0.5
         float howManyWidthsFromCamera =
             (position.x - Camera.main.transform.position.x) / mapWidth;
 
@@ -116,14 +129,14 @@ public class HexMap : MonoBehaviour
         }
     }
 
-    public Hex[] GetHexesWithinRadiusOf(Hex center, int radius)
+    public Hex[] GetHexesWithinRangeOf(Hex center, int range)
     {
         List<Hex> results = new List<Hex>();
-        for (int dx = -radius; dx < radius-1; dx++)
+        for (int dx = -range; dx < range-1; dx++)
         {
-            for (int dy = Mathf.Max(-radius+1, -dx-radius); dy < Mathf.Min(radius, -dx+radius-1); dy++)
+            for (int dy = Mathf.Max(-range+1, -dx-range); dy < Mathf.Min(range, -dx+range-1); dy++)
             {
-                results.Add(hexes[center.q + dx, center.r + dy]);
+                results.Add( GetHexAt(center.q + dx, center.r + dy) );
             }
         }
         return results.ToArray();

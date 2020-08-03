@@ -341,3 +341,5 @@ healthchecksdb
 /Library
 /ProjectSettings
 /UserSettings
+/Build
+/Temp

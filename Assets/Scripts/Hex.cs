@@ -4,8 +4,8 @@ public class Hex
 {
     public Hex(int q, int r, float radius = 1f)
     {
-        //q + r + s = 0
-        //s = -(q + r)
+        // q + r + s = 0
+        // s = -(q + r)
 
         this.q = q;
         this.r = r;
@@ -16,7 +16,7 @@ public class Hex
         this.Vert_spacing = diameter * 0.75f;
     }
 
-    //Coordinates
+    // Coordinates
     public readonly int q, r, s;
     private readonly float diameter, width;
     public float Elevation, Moisture;
@@ -29,8 +29,18 @@ public class Hex
     public Vector3 Position()
     {
         return new Vector3(
-            Horz_spacing * (q + r / 2f), //x
+            Horz_spacing * (q + r / 2f),
             0,
-            Vert_spacing * r); //z
+            Vert_spacing * r);
+    }
+
+    public static float Distance(Hex a, Hex b)
+    {
+        // FIXME: Wrapping
+        return
+            Mathf.Max(
+                Mathf.Abs(a.q - b.q), 
+                Mathf.Abs(a.r - b.r), 
+                Mathf.Abs(a.s - b.s));
     }
 }

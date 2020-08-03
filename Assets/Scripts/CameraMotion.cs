@@ -13,13 +13,13 @@ public class CameraMotion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Clamp the NORTH/SOUTH movement of camera
+        // Clamp the NORTH/SOUTH movement of camera
         transform.position = new Vector3(
             transform.position.x, 
             transform.position.y, 
             Mathf.Clamp(transform.position.z, 0f, HexMap.mapHeightLimit));
 
-        //TODO: Code to click-and-drag camera
+        // TODO: Code to click-and-drag camera
         //              WASD
         //              Zoom in/out
 
@@ -39,6 +39,6 @@ public class CameraMotion : MonoBehaviour
 
     public void PanToHex(Hex hex)
     {
-        //TODO: Move camera to hex
+        // TODO: Move camera to hex
     }
 }
