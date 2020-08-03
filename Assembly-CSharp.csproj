@@ -60,6 +60,7 @@
     <Compile Include="Assets\Scripts\CameraMotion.cs" />
     <Compile Include="Assets\Scripts\HexMap.cs" />
     <Compile Include="Assets\Scripts\HexMap_Continent.cs" />
+    <Compile Include="Assets\Scripts\MouseController.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

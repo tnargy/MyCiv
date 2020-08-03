@@ -11,6 +11,9 @@ public class HexMap : MonoBehaviour
     public Mesh MeshHill;
     public Mesh MeshMountain;
 
+    public GameObject ForestPrefab;
+    public GameObject JunglePrefab;
+
     public Material MatOcean;
     public Material MatPlains;
     public Material MatGrasslands;
@@ -19,8 +22,8 @@ public class HexMap : MonoBehaviour
 
     public static float mapHeightLimit;
     public int mapX = 60, mapY = 30;
-    public float HeightMountain = 0.85f, HeightHill = 0.6f, HeightFlat = 0.0f;
-    public float MoistureJungle = 1f, MoistureForest = 0.8f, MoistureGrasslands = 0.33f, MoisturePlains = 0.0f;
+    public float HeightMountain, HeightHill, HeightFlat;
+    public float MoistureJungle, MoistureForest, MoistureGrasslands, MoisturePlains;
     private Hex[,] hexes;
     private Dictionary<Hex, GameObject> hexToGameObjectMap;
 
@@ -113,40 +116,28 @@ public class HexMap : MonoBehaviour
                 MeshRenderer mr = hexObj.GetComponentInChildren<MeshRenderer>();
                 MeshFilter mf = hexObj.GetComponentInChildren<MeshFilter>();
 
-                // Elevation
-                if (h.Elevation >= HeightMountain)
-                {
-                    mr.material = MatMountain;
-                    mf.mesh = MeshMountain;
-                }
-                else if (h.Elevation >= HeightHill)
-                {
-                    mr.material = MatPlains;
-                    mf.mesh = MeshHill;
-                }
-                else if (h.Elevation >= HeightFlat)
-                {
-                    mr.material = MatPlains;
-                    mf.mesh = MeshFlat;
-                }
-                else
-                {
-                    mr.material = MatOcean;
-                    mf.mesh = MeshWater;
-                }
-
                 // Moiture
-                if (h.Elevation >= HeightFlat)
+                if (h.Elevation >= HeightFlat && h.Elevation < HeightMountain)
                 {
                     if (h.Moisture >= MoistureJungle)
                     {
                         mr.material = MatGrasslands;
-                        // TODO: Spawn Jungle
+                        Vector3 p = hexObj.transform.position;
+                        if (h.Elevation >= HeightHill)
+                        {
+                            p.y += 0.25f;
+                        }
+                        Instantiate(ForestPrefab, p, Quaternion.identity, hexObj.transform);
                     }
                     else if (h.Moisture >= MoistureForest)
                     {
                         mr.material = MatGrasslands;
-                        // TODO: Spawn Forests
+                        Vector3 p = hexObj.transform.position;
+                        if (h.Elevation >= HeightHill)
+                        {
+                            p.y += 0.25f;
+                        }
+                        Instantiate(ForestPrefab, p, Quaternion.identity, hexObj.transform);
                     }
                     else if (h.Moisture >= MoistureGrasslands)
                     {
@@ -162,6 +153,25 @@ public class HexMap : MonoBehaviour
                     }
                 }
 
+                // Elevation
+                if (h.Elevation >= HeightMountain)
+                {
+                    mr.material = MatMountain;
+                    mf.mesh = MeshMountain;
+                }
+                else if (h.Elevation >= HeightHill)
+                {
+                    mf.mesh = MeshHill;
+                }
+                else if (h.Elevation >= HeightFlat)
+                {
+                    mf.mesh = MeshFlat;
+                }
+                else
+                {
+                    mr.material = MatOcean;
+                    mf.mesh = MeshWater;
+                }
             }
         }
     }

@@ -157,6 +157,8 @@ MonoBehaviour:
   MeshFlat: {fileID: 2534964839176971238, guid: 423248a10129ebf4a9e16308bad6ad12, type: 3}
   MeshHill: {fileID: 2534964839176971238, guid: 816c44c0f6ff28942abc16ecca8a8b31, type: 3}
   MeshMountain: {fileID: 2534964839176971238, guid: 561aa17f8b4063f409166c83921d4cfd, type: 3}
+  ForestPrefab: {fileID: 2851355596070361375, guid: 3843d302730dded47bcd0a5897d8e778, type: 3}
+  JunglePrefab: {fileID: 2851355596070361375, guid: 3843d302730dded47bcd0a5897d8e778, type: 3}
   MatOcean: {fileID: 2100000, guid: cdc750ade56e3cc4c9f7f2ed92533a16, type: 2}
   MatPlains: {fileID: 2100000, guid: 8dda57666b9cb614381b85cb9c6332b3, type: 2}
   MatGrasslands: {fileID: 2100000, guid: 991e29118c2a03f429a21f36304ab75d, type: 2}
@@ -167,10 +169,10 @@ MonoBehaviour:
   HeightMountain: 0.85
   HeightHill: 0.6
   HeightFlat: 0
-  MoistureJungle: 1
-  MoistureForest: 0.8
-  MoistureGrasslands: 0.33
-  MoisturePlains: 0
+  MoistureJungle: 0.66
+  MoistureForest: 0.33
+  MoistureGrasslands: 0
+  MoisturePlains: -0.5
   numContinents: 3
 --- !u!4 &26085160
 Transform:
@@ -271,13 +273,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.4330127, y: -0.4330127, z: 0.25, w: 0.75}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 60, y: -60, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,13 +357,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 42, y: 10, z: 0}
+  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
+  m_LocalPosition: {x: 40, y: 10, z: 16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,3 +437,46 @@ LightingSettings:
   m_PVRFilteringAtrousPositionSigmaDirect: 0.5
   m_PVRFilteringAtrousPositionSigmaIndirect: 2
   m_PVRFilteringAtrousPositionSigmaAO: 1
+--- !u!1 &2061444897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2061444899}
+  - component: {fileID: 2061444898}
+  m_Layer: 0
+  m_Name: MouseController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2061444898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061444897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a292fc2157dfd0a488214fb22897a3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2061444899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061444897}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 42.002228, y: 0.45208496, z: 21.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
