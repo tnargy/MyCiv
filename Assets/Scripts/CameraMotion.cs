@@ -15,8 +15,8 @@ public class CameraMotion : MonoBehaviour
     {
         // Clamp the NORTH/SOUTH movement of camera
         transform.position = new Vector3(
-            transform.position.x, 
-            transform.position.y, 
+            transform.position.x,
+            transform.position.y,
             Mathf.Clamp(transform.position.z, 0f, HexMap.mapHeightLimit));
 
         // TODO: Code to click-and-drag camera

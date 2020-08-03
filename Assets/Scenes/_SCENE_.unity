@@ -149,20 +149,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 26085158}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2820539136e2e04ab24913b410b39e4, type: 3}
+  m_Script: {fileID: 11500000, guid: f5d0627c9998eb445a1f407940cc5972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HexPrefab: {fileID: 7899946127616637648, guid: 81df0170e71c67e4c9cf59e2b4feb21c, type: 3}
-  MeshWater: {fileID: 2534964839176971238, guid: 2217b8c802933544e9002e15b4e45dff, type: 3}
-  MeshFlat: {fileID: 2534964839176971238, guid: 2217b8c802933544e9002e15b4e45dff, type: 3}
-  MeshHill: {fileID: 2534964839176971238, guid: 2217b8c802933544e9002e15b4e45dff, type: 3}
-  MeshMountain: {fileID: 2534964839176971238, guid: 2217b8c802933544e9002e15b4e45dff, type: 3}
-  MatOcean: {fileID: 2100000, guid: 618686b3057947748b2d9474be2de7c8, type: 2}
-  MatPlains: {fileID: 2100000, guid: 12e02987cc1f4734a8256fc115efe452, type: 2}
-  MatGrasslands: {fileID: 2100000, guid: 5ad77ff19ca198041b32b4d63958d55a, type: 2}
-  MatMountain: {fileID: 2100000, guid: fd3b8f9cc98954d4d926c8f7cfa634e9, type: 2}
+  HexPrefab: {fileID: 7899946127616637648, guid: efaa5346ed12108418eec6edb2b727b3, type: 3}
+  MeshWater: {fileID: 2534964839176971238, guid: 423248a10129ebf4a9e16308bad6ad12, type: 3}
+  MeshFlat: {fileID: 2534964839176971238, guid: 423248a10129ebf4a9e16308bad6ad12, type: 3}
+  MeshHill: {fileID: 2534964839176971238, guid: 816c44c0f6ff28942abc16ecca8a8b31, type: 3}
+  MeshMountain: {fileID: 2534964839176971238, guid: 561aa17f8b4063f409166c83921d4cfd, type: 3}
+  MatOcean: {fileID: 2100000, guid: cdc750ade56e3cc4c9f7f2ed92533a16, type: 2}
+  MatPlains: {fileID: 2100000, guid: 8dda57666b9cb614381b85cb9c6332b3, type: 2}
+  MatGrasslands: {fileID: 2100000, guid: 991e29118c2a03f429a21f36304ab75d, type: 2}
+  MatMountain: {fileID: 2100000, guid: 43348e91cb1f4394fb69df45f0152a27, type: 2}
+  MatDesert: {fileID: 2100000, guid: a90ee3ff1248da44f8f3ed96eec5d00c, type: 2}
   mapX: 60
   mapY: 30
+  HeightMountain: 0.85
+  HeightHill: 0.6
+  HeightFlat: 0
+  MoistureJungle: 1
+  MoistureForest: 0.8
+  MoistureGrasslands: 0.33
+  MoisturePlains: 0
+  numContinents: 3
 --- !u!4 &26085160
 Transform:
   m_ObjectHideFlags: 0
@@ -347,7 +356,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 10, z: 0}
+  m_LocalPosition: {x: 42, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -362,7 +371,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f668d3c0564d09840836ecbf6d077931, type: 3}
+  m_Script: {fileID: 11500000, guid: fbf55cf5f5394b542bac35b226ff1b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!850595691 &1183038702
