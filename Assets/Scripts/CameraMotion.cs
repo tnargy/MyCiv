@@ -3,6 +3,7 @@
 public class CameraMotion : MonoBehaviour
 {
     HexBehavior[] hexes;
+    private float moveSpeed = 10f;
 
     // Start is called before the first frame update
     void Start()
@@ -19,9 +20,11 @@ public class CameraMotion : MonoBehaviour
             transform.position.y,
             Mathf.Clamp(transform.position.z, 0f, HexMap.mapHeightLimit));
 
-        // TODO: Code to click-and-drag camera
-        //              WASD
-        //              Zoom in/out
+        Vector3 translate = new Vector3(
+            Input.GetAxis("Horizontal"),
+            0,
+            Input.GetAxis("Vertical"));
+        transform.Translate(translate * moveSpeed * Time.deltaTime, Space.World);
 
         CheckIfCameraMoved();
     }
