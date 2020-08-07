@@ -8,10 +8,10 @@ public class HexMap_Continent : HexMap
     override public void GenerateMap()
     {
         base.GenerateMap();
-
-        int continentSpacing = mapX / numContinents;
         Random.InitState(0); // Seed function for testing
 
+        // Create Continents above sea level
+        int continentSpacing = MapX / numContinents;
         for (int c = 0; c < numContinents; c++)
         {
             // Make some kind of raised area
@@ -19,25 +19,24 @@ public class HexMap_Continent : HexMap
             for (int i = 0; i < numSplats; i++)
             {
                 int range = Random.Range(5, 8);
-                int y = Random.Range(range, mapY - range);
+                int y = Random.Range(range, MapY - range);
                 int x = Random.Range(0, 10) - y / 2 + (c * continentSpacing);
 
                 ElevateArea(x, y, range);
             }
         }
 
-
-        // Add lumpiness Perlin Noise
+        // Add Elevation with Perlin Noise
         float noiseResolution = 0.01f;
         Vector2 noiseOffset = new Vector2(Random.Range(0f, 1f), Random.Range(0f, 1f));
         float noiseScale = 2f;  // Large number makes more island/lakes
 
-        for (int col = 0; col < mapX; col++)
+        for (int col = 0; col < MapX; col++)
         {
-            for (int row = 0; row < mapY; row++)
+            for (int row = 0; row < MapY; row++)
             {
                 Hex h = GetHexAt(col, row);
-                int squareMap = Mathf.Max(mapX, mapY);  // Used to make noise square
+                int squareMap = Mathf.Max(MapX, MapY);  // Used to make noise square
                 float noise = Mathf.PerlinNoise(
                     ((float)col / squareMap / noiseResolution) + noiseOffset.x,
                     ((float)row / squareMap / noiseResolution) + noiseOffset.y
@@ -46,18 +45,17 @@ public class HexMap_Continent : HexMap
             }
         }
 
-        // Simulate rainfall / moisture(prob just Perlin it for now) and set to
-        //     plains / grassland + forest
+        // Add Moisture with Perlin Noise
         noiseResolution = 0.05f;
         noiseOffset = new Vector2(Random.Range(0f, 1f), Random.Range(0f, 1f));
         noiseScale = 2f;
 
-        for (int col = 0; col < mapX; col++)
+        for (int col = 0; col < MapX; col++)
         {
-            for (int row = 0; row < mapY; row++)
+            for (int row = 0; row < MapY; row++)
             {
                 Hex h = GetHexAt(col, row);
-                int squareMap = Mathf.Max(mapX, mapY);  // Used to make noise square
+                int squareMap = Mathf.Max(MapX, MapY);  // Used to make noise square
                 float noise = Mathf.PerlinNoise(
                     ((float)col / squareMap / noiseResolution) + noiseOffset.x,
                     ((float)row / squareMap / noiseResolution) + noiseOffset.y
@@ -66,8 +64,8 @@ public class HexMap_Continent : HexMap
             }
         }
 
-
         UpdateHexVisuals();
+        SpawnUnitAt(UnitWarriorPrefab, 16, 16);
     }
 
     private void ElevateArea(int q, int r, int range, float centerHeight = 0.8f)
@@ -76,10 +74,11 @@ public class HexMap_Continent : HexMap
         Hex[] area = GetHexesWithinRangeOf(center, range);
         foreach (Hex h in area)
         {
-            //if (h.Elevation < 0)
-            //    h.Elevation = 0;
-
-            h.Elevation = centerHeight * Mathf.Lerp(1f, 0.25f, Mathf.Pow(Hex.Distance(center, h) / range, 2));
+            h.Elevation = centerHeight * Mathf.Lerp(
+                1f, 
+                0.25f, 
+                Mathf.Pow(Hex.Distance(center, h) / range, 2)
+                );
         }
     }
 }

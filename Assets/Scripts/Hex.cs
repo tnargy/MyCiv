@@ -39,8 +39,8 @@ public class Hex
     public static float Distance(Hex a, Hex b)
     {
         int dQ = Mathf.Abs(a.Q - b.Q);
-        if (dQ > a.hexMap.mapX / 2)
-            dQ = a.hexMap.mapX - dQ;
+        if (dQ > a.hexMap.MapX / 2)
+            dQ = a.hexMap.MapX - dQ;
 
         return
             Mathf.Max(

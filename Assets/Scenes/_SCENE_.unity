@@ -164,8 +164,9 @@ MonoBehaviour:
   MatGrasslands: {fileID: 2100000, guid: 991e29118c2a03f429a21f36304ab75d, type: 2}
   MatMountain: {fileID: 2100000, guid: 43348e91cb1f4394fb69df45f0152a27, type: 2}
   MatDesert: {fileID: 2100000, guid: a90ee3ff1248da44f8f3ed96eec5d00c, type: 2}
-  mapX: 60
-  mapY: 30
+  UnitWarriorPrefab: {fileID: 4833540871313221866, guid: 2cbf7f6e09dfc9e49952228f35e0b9ab, type: 3}
+  MapX: 60
+  MapY: 30
   HeightMountain: 0.85
   HeightHill: 0.6
   HeightFlat: 0
@@ -186,7 +187,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
@@ -278,7 +279,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 60, y: -60, z: 0}
 --- !u!1 &963194225
 GameObject:
@@ -478,5 +479,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MouseController : MonoBehaviour
 {
@@ -17,10 +16,10 @@ public class MouseController : MonoBehaviour
             isDraggingCamera = true;
             lastMousePosition = hitPos;
         }
-        else if(Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0))
         {
             isDraggingCamera = false;
-        }
+        } 
 
         if (isDraggingCamera)
         {
@@ -45,10 +44,15 @@ public class MouseController : MonoBehaviour
                 Mathf.Clamp(p.y, minHeight, maxHeight),
                 p.z);
 
-            Camera.main.transform.rotation = Quaternion.Euler(
-                Mathf.Lerp(20, 90, p.y / (maxHeight / 1.5f)),
-                Camera.main.transform.rotation.eulerAngles.y,
-                Camera.main.transform.rotation.eulerAngles.z);
+            //Change angle if Ctrl held down
+            if (true || Input.GetKey(KeyCode.LeftControl))
+            {
+                p = Camera.main.transform.position;
+                Camera.main.transform.rotation = Quaternion.Euler(
+                    Mathf.Lerp(20, 90, p.y / (maxHeight / 1.5f)),
+                    Camera.main.transform.rotation.eulerAngles.y,
+                    Camera.main.transform.rotation.eulerAngles.z);
+            }
         }
     }
 
@@ -57,7 +61,6 @@ public class MouseController : MonoBehaviour
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (mouseRay.direction.y >= 0)
         {
-            Debug.LogError("Mouse pointing up???");
             isDraggingCamera = false;
         }
         float rayLen = mouseRay.origin.y / mouseRay.direction.y;

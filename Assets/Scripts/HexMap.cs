@@ -20,10 +20,13 @@ public class HexMap : MonoBehaviour
     public Material MatMountain;
     public Material MatDesert;
 
+    public GameObject UnitWarriorPrefab;
+
     public static float mapHeightLimit;
-    public int mapX = 60, mapY = 30;
-    public float HeightMountain, HeightHill, HeightFlat;
-    public float MoistureJungle, MoistureForest, MoistureGrasslands, MoisturePlains;
+    public int MapX = 60, MapY = 30;
+    public float HeightMountain = 0.85f, HeightHill = 0.6f, HeightFlat = 0f;
+    public float MoistureJungle = 0.66f, MoistureForest = 0.33f;
+    public float MoistureGrasslands = 0f, MoisturePlains = -0.5f;
     private Hex[,] hexes;
     private Dictionary<Hex, GameObject> hexToGameObjectMap;
 
@@ -42,9 +45,9 @@ public class HexMap : MonoBehaviour
             return null;
         }
 
-        x %= mapX;
+        x %= MapX;
         if (x < 0)
-            x += mapX;
+            x += MapX;
 
         Hex hex = hexes[x, y];
         return hex ?? null;
@@ -52,13 +55,13 @@ public class HexMap : MonoBehaviour
 
     virtual public void GenerateMap()
     {
-        hexes = new Hex[mapX, mapY];
+        hexes = new Hex[MapX, MapY];
         hexToGameObjectMap = new Dictionary<Hex, GameObject>();
 
         // Generate Ocean Map
-        for (int col = 0; col < mapX; col++)
+        for (int col = 0; col < MapX; col++)
         {
-            for (int row = 0; row < mapY; row++)
+            for (int row = 0; row < MapY; row++)
             {
                 Hex h = new Hex(this, col, row)
                 {
@@ -84,13 +87,13 @@ public class HexMap : MonoBehaviour
             }
         }
 
-        mapHeightLimit = hexes[0, 0].Vert_spacing * mapY;
+        mapHeightLimit = hexes[0, 0].Vert_spacing * MapY;
         UpdateHexVisuals();
     }
 
     public Vector3 PositionFromCamera(Hex h)
     {
-        float mapWidth = h.Horz_spacing * mapX;
+        float mapWidth = h.Horz_spacing * MapX;
 
         Vector3 position = h.Position();
 
@@ -106,9 +109,9 @@ public class HexMap : MonoBehaviour
 
     public void UpdateHexVisuals()
     {
-        for (int col = 0; col < mapX; col++)
+        for (int col = 0; col < MapX; col++)
         {
-            for (int row = 0; row < mapY; row++)
+            for (int row = 0; row < MapY; row++)
             {
                 Hex h = hexes[col, row];
                 GameObject hexObj = hexToGameObjectMap[h];
@@ -187,5 +190,16 @@ public class HexMap : MonoBehaviour
             }
         }
         return results.ToArray();
+    }
+
+    public void SpawnUnitAt(GameObject unit, int q, int r)
+    {
+        Hex h = GetHexAt(q, r);
+        Transform hexTransform = hexToGameObjectMap[h].transform;
+        Instantiate(
+            unit,
+            hexTransform.position,
+            Quaternion.identity,
+            hexTransform);
     }
 }

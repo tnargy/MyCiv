@@ -39,9 +39,4 @@ public class CameraMotion : MonoBehaviour
             }
         }
     }
-
-    public void PanToHex(Hex hex)
-    {
-        // TODO: Move camera to hex
-    }
 }
