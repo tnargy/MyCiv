@@ -19,7 +19,7 @@ public class MouseController : MonoBehaviour
         else if (Input.GetMouseButtonUp(0))
         {
             isDraggingCamera = false;
-        } 
+        }
 
         if (isDraggingCamera)
         {

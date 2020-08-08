@@ -28,7 +28,7 @@ public class HexMap : MonoBehaviour
     public float MoistureJungle = 0.66f, MoistureForest = 0.33f;
     public float MoistureGrasslands = 0f, MoisturePlains = -0.5f;
     private Hex[,] hexes;
-    private Dictionary<Hex, GameObject> hexToGameObjectMap;
+    public Dictionary<Hex, GameObject> hexToGameObjectMap;
     private HashSet<Unit> units;
     private Dictionary<Unit, GameObject> unitToGameObjectMap;
 
@@ -37,6 +37,20 @@ public class HexMap : MonoBehaviour
     void Start()
     {
         GenerateMap();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (units != null)
+            {
+                foreach (Unit unit in units)
+                {
+                    unit.DoTurn();
+                }
+            }
+        }
     }
 
     public Hex GetHexAt(int x, int y)
@@ -209,9 +223,10 @@ public class HexMap : MonoBehaviour
             hexTransform.position,
             Quaternion.identity,
             hexTransform);
-        
+
         units.Add(unit);
         unitToGameObjectMap.Add(unit, unitObj);
         unit.SetHex(h);
+        unit.OnUnitMoved += unitObj.GetComponent<UnitView>().OnUnitMoved;
     }
 }

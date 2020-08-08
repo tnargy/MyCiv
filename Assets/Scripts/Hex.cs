@@ -16,7 +16,7 @@ public class Hex
         this.width = width_multiplier * diameter;
         this.Horz_spacing = width;
         this.Vert_spacing = diameter * 0.75f;
-        this.hexMap = hexMap;
+        this.HexMap = hexMap;
     }
 
 
@@ -26,7 +26,7 @@ public class Hex
     public float Horz_spacing { get; }
     public float Vert_spacing { get; }
 
-    private readonly HexMap hexMap;
+    public readonly HexMap HexMap;
     private readonly float diameter, width;
     static readonly float width_multiplier = Mathf.Sqrt(3) / 2;
 
@@ -43,8 +43,8 @@ public class Hex
     public static float Distance(Hex a, Hex b)
     {
         int dQ = Mathf.Abs(a.Q - b.Q);
-        if (dQ > a.hexMap.MapX / 2)
-            dQ = a.hexMap.MapX - dQ;
+        if (dQ > a.HexMap.MapX / 2)
+            dQ = a.HexMap.MapX - dQ;
 
         return
             Mathf.Max(
