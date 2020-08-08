@@ -8,7 +8,7 @@ public class HexMap_Continent : HexMap
     override public void GenerateMap()
     {
         base.GenerateMap();
-        Random.InitState(0); // Seed function for testing
+        //Random.InitState(0);
 
         // Create Continents above sea level
         int continentSpacing = MapX / numContinents;
@@ -65,7 +65,8 @@ public class HexMap_Continent : HexMap
         }
 
         UpdateHexVisuals();
-        SpawnUnitAt(UnitWarriorPrefab, 16, 16);
+        Unit unit = new Unit();
+        SpawnUnitAt(unit, UnitWarriorPrefab, 16, 16);
     }
 
     private void ElevateArea(int q, int r, int range, float centerHeight = 0.8f)

@@ -29,6 +29,8 @@ public class HexMap : MonoBehaviour
     public float MoistureGrasslands = 0f, MoisturePlains = -0.5f;
     private Hex[,] hexes;
     private Dictionary<Hex, GameObject> hexToGameObjectMap;
+    private HashSet<Unit> units;
+    private Dictionary<Unit, GameObject> unitToGameObjectMap;
 
 
     // Start is called before the first frame update
@@ -192,14 +194,24 @@ public class HexMap : MonoBehaviour
         return results.ToArray();
     }
 
-    public void SpawnUnitAt(GameObject unit, int q, int r)
+    public void SpawnUnitAt(Unit unit, GameObject prefab, int q, int r)
     {
+        if (units == null)
+        {
+            units = new HashSet<Unit>();
+            unitToGameObjectMap = new Dictionary<Unit, GameObject>();
+        }
+
         Hex h = GetHexAt(q, r);
         Transform hexTransform = hexToGameObjectMap[h].transform;
-        Instantiate(
-            unit,
+        GameObject unitObj = Instantiate(
+            prefab,
             hexTransform.position,
             Quaternion.identity,
             hexTransform);
+        
+        units.Add(unit);
+        unitToGameObjectMap.Add(unit, unitObj);
+        unit.SetHex(h);
     }
 }

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class Hex
 {
@@ -28,6 +30,8 @@ public class Hex
     private readonly float diameter, width;
     static readonly float width_multiplier = Mathf.Sqrt(3) / 2;
 
+    HashSet<Unit> units;
+
     public Vector3 Position()
     {
         return new Vector3(
@@ -47,5 +51,24 @@ public class Hex
                 dQ,
                 Mathf.Abs(a.R - b.R),
                 Mathf.Abs(a.S - b.S));
+    }
+
+    public void AddUnit(Unit unit)
+    {
+        if (units == null)
+            units = new HashSet<Unit>();
+        else
+            units.Add(unit);
+    }
+
+    public void RemoveUnit(Unit unit)
+    {
+        if (units != null)
+            units.Remove(unit);
+    }
+
+    public Unit[] Units()
+    {
+        return units.ToArray();
     }
 }
