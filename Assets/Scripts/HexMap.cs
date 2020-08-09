@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using QPath;
 
-public class HexMap : MonoBehaviour
+public class HexMap : MonoBehaviour, IQPathWorld
 {
     public GameObject HexPrefab;
 

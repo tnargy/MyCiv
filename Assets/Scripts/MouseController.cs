@@ -18,7 +18,7 @@ public class MouseController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
             CancelUpdateFunc();
-        
+
         Update_CurrentFunc();
         Update_Zoom();
         lastMousePosition = Input.mousePosition;

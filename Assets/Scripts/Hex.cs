@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using QPath;
 
-public class Hex
+public class Hex : IQPathTile
 {
     public Hex(HexMap hexMap, int q, int r, float radius = 1f)
     {
@@ -25,6 +26,9 @@ public class Hex
     public float Moisture { get; set; }
     public float Horz_spacing { get; }
     public float Vert_spacing { get; }
+
+    // TODO Need prop to track type (plain, grassland ...)
+    // TODO Need prop to track detail (forest, mine, farm ...)
 
     public readonly HexMap HexMap;
     private readonly float diameter, width;
@@ -70,5 +74,21 @@ public class Hex
     public Unit[] Units()
     {
         return units.ToArray();
+    }
+
+    public int BaseMovementCost()
+    {
+        // TODO Factor in terrain type & features
+        return 1;
+    }
+
+    public IQPathTile[] GetNeighbors()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public float AggregateCostToEnter(float costSoFar, IQPathTile sourceTile, IQPathUnit theUnit)
+    {
+        throw new System.NotImplementedException();
     }
 }
