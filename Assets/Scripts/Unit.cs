@@ -1,6 +1,7 @@
 ﻿using QPath;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class Unit : IQPathUnit
@@ -22,15 +23,14 @@ public class Unit : IQPathUnit
 
     public void DUMMY_PATHING_FUNCTION()
     {
-        IQPathTile[] pathTiles = QPath.QPath.FindPath(Hex.HexMap,
+        Hex[] pathTiles = QPath.QPath.FindPath<Hex>(Hex.HexMap,
                                                       this,
                                                       Hex,
                                                       Hex.HexMap.GetHexAt(Hex.Q + 5, Hex.R),
                                                       Hex.CostEstimate);
-        // Debug.Log($"Got pathfinding path length of {pathTiles.Length}");
+        Debug.Log($"Got pathfinding path length of {pathTiles.Length}");
 
-        Hex[] hexArray = Array.ConvertAll(pathTiles, a => (Hex)a);
-        SetHexPath(hexArray);
+        SetHexPath(pathTiles);
     }
 
     public void SetHexPath(Hex[] hexPath)
