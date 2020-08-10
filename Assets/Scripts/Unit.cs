@@ -29,15 +29,19 @@ public class Unit : IQPathUnit
                                                       Hex.HexMap.GetHexAt(Hex.Q + 5, Hex.R),
                                                       Hex.CostEstimate);
         Debug.Log($"Got pathfinding path length of {pathTiles.Length}");
-
         SetHexPath(pathTiles);
     }
 
-    public void SetHexPath(Hex[] hexPath)
+    public void ClearHexPath()
     {
-        this.hexPath = new Queue<Hex>(hexPath);
-        if (this.hexPath.Count > 1)
-            this.hexPath.Dequeue();  // Skip current tile.
+        hexPath = new Queue<Hex>();
+    }
+
+    public void SetHexPath(Hex[] path)
+    {
+        hexPath = new Queue<Hex>(path);
+        if (hexPath.Count > 0)
+            hexPath.Dequeue();  // Skip current tile.
     }
 
     public void SetHex(Hex newHex)
