@@ -63,10 +63,8 @@ public class Unit : IQPathUnit
         SetHex(newHex);
     }
 
-    public int MovementCostToEnterHex(Hex hex)
+    public float MovementCostToEnterHex(Hex hex)
     {
-        // TODO Override base movement cost based on
-        // our movement mode + tile type
         return hex.BaseMovementCost();
     }
 

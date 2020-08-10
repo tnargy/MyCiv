@@ -76,8 +76,7 @@ namespace QPath
                         // Values less than zero represent an invalid/impassable tile
                         continue;
                     }
-                    //Debug.Log(total_pathfinding_cost_to_neighbor);
-
+                    
                     float tentative_g_score = total_pathfinding_cost_to_neighbor;
 
                     // Is the neighbour already in the open set?

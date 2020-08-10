@@ -26,7 +26,7 @@ public class Hex : IQPathTile
     public float Moisture { get; set; }
     public float Horz_spacing { get; }
     public float Vert_spacing { get; }
-    public int MovementCost = 1;
+    public float MovementCost = 1f;
 
     // TODO Need prop to track type (plain, grassland ...)
     // TODO Need prop to track detail (forest, mine, farm ...)
@@ -90,9 +90,8 @@ public class Hex : IQPathTile
         return units.ToArray();
     }
 
-    public int BaseMovementCost()
+    public float BaseMovementCost()
     {
-        // TODO Factor in terrain type & features
         return MovementCost;
     }
 

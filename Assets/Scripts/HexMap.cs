@@ -210,7 +210,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
                 else if (h.Elevation >= HeightFlat)
                 {
                     mf.mesh = MeshFlat;
-                    h.MovementCost = 1;
+                    h.MovementCost = 1.001f;
                 }
                 else
                 {
