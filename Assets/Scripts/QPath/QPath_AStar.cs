@@ -30,7 +30,7 @@ namespace QPath
 
         public void DoWork()
         {
-            Debug.Log("QPath_AStar::DoWork");
+            // Debug.Log("QPath_AStar::DoWork");
             path = new Queue<IQPathTile>();
 
             HashSet<IQPathTile> closedSet = new HashSet<IQPathTile>();

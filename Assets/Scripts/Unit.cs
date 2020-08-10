@@ -27,7 +27,7 @@ public class Unit : IQPathUnit
                                                       Hex,
                                                       Hex.HexMap.GetHexAt(Hex.Q + 5, Hex.R),
                                                       Hex.CostEstimate);
-        Debug.Log($"Got pathfinding path length of {pathTiles.Length}");
+        // Debug.Log($"Got pathfinding path length of {pathTiles.Length}");
 
         Hex[] hexArray = Array.ConvertAll(pathTiles, a => (Hex)a);
         SetHexPath(hexArray);

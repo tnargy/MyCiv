@@ -26,7 +26,7 @@ namespace QPath
             IQPathTile endTile,
             CostEstimateDelegate costEstimateFunc)
         {
-            Debug.Log("QPath::FindPath");
+            // Debug.Log("QPath::FindPath");
             if (world == null || unit == null || startTile == null || endTile == null)
             {
                 Debug.LogError("Null values passed to QPath::FindPath");
