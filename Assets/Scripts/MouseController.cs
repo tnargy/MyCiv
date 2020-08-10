@@ -2,40 +2,53 @@
 
 public class MouseController : MonoBehaviour
 {
+    HexMap hexMap;
     Vector3 lastMouseGroundPlanePosition;
     Vector3 lastMousePosition;
     Unit selectedUnit = null;
+    Hex[] hexPath;
+    public LayerMask LMHex;
 
     delegate void UpdateFunc();
     UpdateFunc Update_CurrentFunc;
+    private Hex hexLastUnderMouse;
+    private Hex hexUnderMouse;
 
     private void Start()
     {
+        hexMap = GameObject.FindObjectOfType<HexMap>();
         Update_CurrentFunc = Update_DetectModeStart;
     }
 
     private void Update()
     {
+        hexUnderMouse = MouseToHex();
         if (Input.GetKeyDown(KeyCode.Escape))
             CancelUpdateFunc();
 
         Update_CurrentFunc();
         Update_Zoom();
         lastMousePosition = Input.mousePosition;
+        hexLastUnderMouse = hexUnderMouse;
     }
 
     void CancelUpdateFunc()
     {
         Update_CurrentFunc = Update_DetectModeStart;
-
-        // Cleanup UI stuff
+        selectedUnit = null;
+        // TODO Cleanup UI stuff
     }
 
     void Update_DetectModeStart()
     {
         if (Input.GetMouseButtonUp(0))
         {
-            // TODO: select unit
+            Unit[] units = hexUnderMouse.Units;
+            if (units.Length > 0)
+            {
+                selectedUnit = units[0];
+                Debug.Log("Selected Unit");
+            }
         }
         else if (selectedUnit != null && Input.GetMouseButton(1))
         {
@@ -48,18 +61,24 @@ public class MouseController : MonoBehaviour
             Update_CurrentFunc();
         }
     }
-
     void Update_UnitMovement()
     {
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(1)  || selectedUnit == null)
         {
-            // TODO: copy pathfinding path to unit's movement queue
+            if (selectedUnit != null)
+            {
+                selectedUnit.SetHexPath(hexPath);
+            }
+
             CancelUpdateFunc();
             return;
         }
-    }
 
-    // Update is called once per frame
+        if (hexPath == null || hexUnderMouse != hexLastUnderMouse)
+        {
+            hexPath = QPath.QPath.FindPath<Hex>(hexMap, selectedUnit, selectedUnit.Hex, hexUnderMouse, Hex.CostEstimate);
+        }
+    }
     void Update_CameraDrag()
     {
         if (Input.GetMouseButtonUp(0))
@@ -103,5 +122,21 @@ public class MouseController : MonoBehaviour
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         float rayLen = mouseRay.origin.y / mouseRay.direction.y;
         return mouseRay.origin - (mouseRay.direction * rayLen);
+    }
+
+    private Hex MouseToHex()
+    {
+        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, LMHex.value))
+        {
+            GameObject hexObj = hitInfo.rigidbody.gameObject;
+            Hex hex = hexMap.GetHexFromGameObject(hexObj);
+            
+            return hex;
+        }
+
+        return null;
     }
 }

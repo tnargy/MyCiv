@@ -30,7 +30,8 @@ public class HexMap : MonoBehaviour, IQPathWorld
     public float MoistureGrasslands = 0f, MoisturePlains = -0.5f;
     private Hex[,] hexes;
     private HashSet<Unit> units;
-    public Dictionary<Hex, GameObject> HexToGameObjectMap;
+    private Dictionary<Hex, GameObject> hexToGameObjectMap;
+    private Dictionary<GameObject, Hex> gameObjectToHexMap;
     private Dictionary<Unit, GameObject> unitToGameObjectMap;
 
 
@@ -93,7 +94,8 @@ public class HexMap : MonoBehaviour, IQPathWorld
     virtual public void GenerateMap()
     {
         hexes = new Hex[MapX, MapY];
-        HexToGameObjectMap = new Dictionary<Hex, GameObject>();
+        hexToGameObjectMap = new Dictionary<Hex, GameObject>();
+        gameObjectToHexMap = new Dictionary<GameObject, Hex>();
 
         // Generate Ocean Map
         for (int col = 0; col < MapX; col++)
@@ -119,8 +121,8 @@ public class HexMap : MonoBehaviour, IQPathWorld
                     hexObj.GetComponentInChildren<TextMeshPro>().text = $"{col}, {row}";
 
                 hexes[col, row] = h;
-                HexToGameObjectMap[h] = hexObj;
-
+                hexToGameObjectMap[h] = hexObj;
+                gameObjectToHexMap[hexObj] = h;
             }
         }
 
@@ -151,7 +153,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
             for (int row = 0; row < MapY; row++)
             {
                 Hex h = hexes[col, row];
-                GameObject hexObj = HexToGameObjectMap[h];
+                GameObject hexObj = hexToGameObjectMap[h];
 
                 MeshRenderer mr = hexObj.GetComponentInChildren<MeshRenderer>();
                 MeshFilter mf = hexObj.GetComponentInChildren<MeshFilter>();
@@ -244,7 +246,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
         }
 
         Hex h = GetHexAt(q, r);
-        Transform hexTransform = HexToGameObjectMap[h].transform;
+        Transform hexTransform = hexToGameObjectMap[h].transform;
         GameObject unitObj = Instantiate(
             prefab,
             hexTransform.position,
@@ -255,5 +257,22 @@ public class HexMap : MonoBehaviour, IQPathWorld
         unitToGameObjectMap.Add(unit, unitObj);
         unit.SetHex(h);
         unit.OnUnitMoved += unitObj.GetComponent<UnitView>().OnUnitMoved;
+    }
+
+    public GameObject GetGameObjectFromHex(Hex h)
+    {
+        if (hexToGameObjectMap.ContainsKey(h))
+        {
+            return hexToGameObjectMap[h];
+        }
+        return null;
+    }
+    public Hex GetHexFromGameObject(GameObject gObj)
+    {
+        if (gameObjectToHexMap.ContainsKey(gObj))
+        {
+            return gameObjectToHexMap[gObj];
+        }
+        return null;
     }
 }

@@ -24,7 +24,8 @@ namespace QPath
             IQPathUnit unit,
             T startTile,
             T endTile,
-            CostEstimateDelegate costEstimateFunc) where T : IQPathTile
+            CostEstimateDelegate costEstimateFunc
+            ) where T : IQPathTile
         {
             // Debug.Log("QPath::FindPath");
             if (world == null || unit == null || startTile == null || endTile == null)

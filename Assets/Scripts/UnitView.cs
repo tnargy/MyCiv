@@ -30,7 +30,7 @@ public class UnitView : MonoBehaviour
         newPosition = hexMap.PositionFromCamera(newHex);
         currentVelocity = Vector3.zero;
 
-        transform.SetParent(hexMap.HexToGameObjectMap[newHex].transform);
+        transform.SetParent(hexMap.GetGameObjectFromHex(newHex).transform);
         if (Vector3.Distance(transform.position, newPosition) > 2)
         {
             // Big Jump

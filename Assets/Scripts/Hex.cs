@@ -36,6 +36,13 @@ public class Hex : IQPathTile
     static readonly float width_multiplier = Mathf.Sqrt(3) / 2;
 
     HashSet<Unit> units;
+    public Unit[] Units
+    {
+        get {
+            return units.ToArray();
+        }
+    }
+
     Hex[] neighbours;
 
     public override string ToString()
@@ -73,21 +80,13 @@ public class Hex : IQPathTile
     {
         if (units == null)
             units = new HashSet<Unit>();
-        else
-            units.Add(unit);
+        units.Add(unit);
     }
 
     public void RemoveUnit(Unit unit)
     {
         if (units != null)
             units.Remove(unit);
-    }
-
-    public Unit[] Units()
-    {
-        if (units == null)
-            return null;
-        return units.ToArray();
     }
 
     public float BaseMovementCost()
