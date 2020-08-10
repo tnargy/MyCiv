@@ -66,7 +66,7 @@ public class HexMap_Continent : HexMap
 
         UpdateHexVisuals();
         Unit unit = new Unit();
-        SpawnUnitAt(unit, UnitWarriorPrefab, 0, 0);
+        SpawnUnitAt(unit, UnitWarriorPrefab, 16, 16);
     }
 
     private void ElevateArea(int q, int r, int range, float centerHeight = 0.8f)

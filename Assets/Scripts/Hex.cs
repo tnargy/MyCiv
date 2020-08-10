@@ -99,9 +99,8 @@ public class Hex : IQPathTile
                 HexMap.GetHexAt(Q + 0, R + 1),
                 HexMap.GetHexAt(Q + 0, R - 1),
                 HexMap.GetHexAt(Q + 1, R - 1),
-                HexMap.GetHexAt(Q - 1, R + 1)};
-            neighbours = (Hex[])neighbours.Where(x => x != null);
-            Debug.Log("Test");
+                HexMap.GetHexAt(Q - 1, R + 1)}
+                .Where(x => x != null).ToArray<Hex>();
         }
         return neighbours;
     }
