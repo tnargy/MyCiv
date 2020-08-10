@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace QPath
 {
-    public class QPath_AStar    {
+    public class QPath_AStar
+    {
         public QPath_AStar(IQPathWorld world,
                             IQPathUnit unit,
                             IQPathTile startTile,

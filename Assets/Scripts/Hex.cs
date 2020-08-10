@@ -1,5 +1,4 @@
 ﻿using QPath;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -46,7 +45,7 @@ public class Hex : IQPathTile
             Vert_spacing * R);
     }
 
-    public static float CostECostEstimate(IQPathTile a, IQPathTile b)
+    public static float CostEstimate(IQPathTile a, IQPathTile b)
     {
         return Distance((Hex)a, (Hex)b);
     }
@@ -107,6 +106,6 @@ public class Hex : IQPathTile
 
     public float AggregateCostToEnter(float costSoFar, IQPathTile sourceTile, IQPathUnit theUnit)
     {
-        throw new System.NotImplementedException();
+        return ((Unit)theUnit).AggregateTurnsToEnterHex(this, costSoFar);
     }
 }

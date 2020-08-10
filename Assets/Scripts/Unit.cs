@@ -1,4 +1,5 @@
 ﻿using QPath;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,15 +19,24 @@ public class Unit : IQPathUnit
 
     // TODO This should be moved to central config file
     const bool MOVEMENT_RULES_LIKE_CIV6 = false;
-    
+
     public void DUMMY_PATHING_FUNCTION()
     {
-        QPath.QPath.FindPath(Hex.HexMap, this, Hex, Hex.HexMap.GetHexAt(Hex.Q + 5, Hex.R), Hex.CostECostEstimate);
+        IQPathTile[] pathTiles = QPath.QPath.FindPath(Hex.HexMap,
+                                                      this,
+                                                      Hex,
+                                                      Hex.HexMap.GetHexAt(Hex.Q + 5, Hex.R),
+                                                      Hex.CostEstimate);
+        Debug.Log($"Got pathfinding path length of {pathTiles.Length}");
+
+        Hex[] hexArray = Array.ConvertAll(pathTiles, a => (Hex)a);
+        SetHexPath(hexArray);
     }
 
     public void SetHexPath(Hex[] hexPath)
     {
         this.hexPath = new Queue<Hex>(hexPath);
+        this.hexPath.Dequeue();  // Skip current tile.
     }
 
     public void SetHex(Hex newHex)
@@ -71,9 +81,9 @@ public class Unit : IQPathUnit
         float turnsToDateWhole = Mathf.Floor(turnsToDate);
         float turnsToDateFraction = turnsToDate - turnsToDateWhole;
 
-        if (turnsToDateFraction < 0.01f || turnsToDateFraction > 0.99f)
+        if ((turnsToDateFraction > 0f && turnsToDateFraction < 0.01f) || turnsToDateFraction > 0.99f)
         {
-            Debug.LogWarning("Floating point drift.");
+            Debug.LogWarning($"Floating point drift: {turnsToDateFraction}");
             turnsToDateWhole += Mathf.Round(turnsToDateFraction);
             turnsToDateFraction = 0f;
         }

@@ -83,6 +83,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
         }
         catch (System.IndexOutOfRangeException)
         {
+            Debug.LogWarning("Edge of screen");
             return null;
         }
 
