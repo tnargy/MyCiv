@@ -7,15 +7,15 @@ public class UnitView : MonoBehaviour
 
     private void Start()
     {
-        newPosition = this.transform.position;
+        newPosition = transform.position;
     }
 
     private void Update()
     {
-        if (this.transform.position != newPosition)
+        if (transform.position != newPosition)
         {
-            this.transform.position = Vector3.SmoothDamp(
-                this.transform.position,
+            transform.position = Vector3.SmoothDamp(
+                transform.position,
                 newPosition,
                 ref currentVelocity,
                 smoothTime);
@@ -26,15 +26,15 @@ public class UnitView : MonoBehaviour
     {
         // Animate moving unit
         HexMap hexMap = oldHex.HexMap;
-        this.transform.position = hexMap.PositionFromCamera(oldHex);
+        transform.position = hexMap.PositionFromCamera(oldHex);
         newPosition = hexMap.PositionFromCamera(newHex);
         currentVelocity = Vector3.zero;
 
-        this.transform.SetParent(hexMap.hexToGameObjectMap[newHex].transform);
-        if (Vector3.Distance(this.transform.position, newPosition) > 2)
+        transform.SetParent(hexMap.HexToGameObjectMap[newHex].transform);
+        if (Vector3.Distance(transform.position, newPosition) > 2)
         {
             // Big Jump
-            this.transform.position = newPosition;
+            transform.position = newPosition;
         }
     }
 }

@@ -7,7 +7,7 @@ public class Unit : IQPathUnit
 {
     public string Name = "Unnamed";
     public int HP = 100, Strength = 8;
-    public int Movement = 2;
+    public float Movement = 2f;
     public int MovementRemaining = 2;
 
     public Hex Hex { get; protected set; }
@@ -36,7 +36,8 @@ public class Unit : IQPathUnit
     public void SetHexPath(Hex[] hexPath)
     {
         this.hexPath = new Queue<Hex>(hexPath);
-        this.hexPath.Dequeue();  // Skip current tile.
+        if (this.hexPath.Count > 1)
+            this.hexPath.Dequeue();  // Skip current tile.
     }
 
     public void SetHex(Hex newHex)
@@ -75,6 +76,8 @@ public class Unit : IQPathUnit
 
         if (baseTurnsToEnterHex > 1)
             baseTurnsToEnterHex = 1;
+        else if (baseTurnsToEnterHex < 0)
+            return -1;  // Impassible
 
         float turnsRemaining = MovementRemaining / Movement;
 

@@ -4,6 +4,7 @@ public class CameraMotion : MonoBehaviour
 {
     HexBehavior[] hexes;
     private float moveSpeed = 10f;
+    private Vector3 oldPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -31,12 +32,13 @@ public class CameraMotion : MonoBehaviour
 
     private void CheckIfCameraMoved()
     {
-        if (transform.hasChanged)
+        if (transform.position != oldPosition)
         {
-            foreach (HexBehavior hex in hexes)
+            foreach (HexBehavior hexB in hexes)
             {
-                hex.UpdatePosition();
+                hexB.UpdatePosition();
             }
+            oldPosition = transform.position;
         }
     }
 }

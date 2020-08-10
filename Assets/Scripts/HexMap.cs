@@ -29,8 +29,8 @@ public class HexMap : MonoBehaviour, IQPathWorld
     public float MoistureJungle = 0.66f, MoistureForest = 0.33f;
     public float MoistureGrasslands = 0f, MoisturePlains = -0.5f;
     private Hex[,] hexes;
-    public Dictionary<Hex, GameObject> hexToGameObjectMap;
     private HashSet<Unit> units;
+    public Dictionary<Hex, GameObject> HexToGameObjectMap;
     private Dictionary<Unit, GameObject> unitToGameObjectMap;
 
 
@@ -93,7 +93,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
     virtual public void GenerateMap()
     {
         hexes = new Hex[MapX, MapY];
-        hexToGameObjectMap = new Dictionary<Hex, GameObject>();
+        HexToGameObjectMap = new Dictionary<Hex, GameObject>();
 
         // Generate Ocean Map
         for (int col = 0; col < MapX; col++)
@@ -119,7 +119,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
                     hexObj.GetComponentInChildren<TextMeshPro>().text = $"{col}, {row}";
 
                 hexes[col, row] = h;
-                hexToGameObjectMap[h] = hexObj;
+                HexToGameObjectMap[h] = hexObj;
 
             }
         }
@@ -151,7 +151,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
             for (int row = 0; row < MapY; row++)
             {
                 Hex h = hexes[col, row];
-                GameObject hexObj = hexToGameObjectMap[h];
+                GameObject hexObj = HexToGameObjectMap[h];
 
                 MeshRenderer mr = hexObj.GetComponentInChildren<MeshRenderer>();
                 MeshFilter mf = hexObj.GetComponentInChildren<MeshFilter>();
@@ -167,6 +167,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
                         {
                             p.y += 0.25f;
                         }
+                        h.MovementCost = 2;
                         Instantiate(ForestPrefab, p, Quaternion.identity, hexObj.transform);
                     }
                     else if (h.Moisture >= MoistureForest)
@@ -177,6 +178,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
                         {
                             p.y += 0.25f;
                         }
+                        h.MovementCost = 2;
                         Instantiate(ForestPrefab, p, Quaternion.identity, hexObj.transform);
                     }
                     else if (h.Moisture >= MoistureGrasslands)
@@ -198,19 +200,23 @@ public class HexMap : MonoBehaviour, IQPathWorld
                 {
                     mr.material = MatMountain;
                     mf.mesh = MeshMountain;
+                    h.MovementCost = -1;
                 }
                 else if (h.Elevation >= HeightHill)
                 {
                     mf.mesh = MeshHill;
+                    h.MovementCost = 2;
                 }
                 else if (h.Elevation >= HeightFlat)
                 {
                     mf.mesh = MeshFlat;
+                    h.MovementCost = 1;
                 }
                 else
                 {
                     mr.material = MatOcean;
                     mf.mesh = MeshWater;
+                    h.MovementCost = -1;
                 }
             }
         }
@@ -238,7 +244,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
         }
 
         Hex h = GetHexAt(q, r);
-        Transform hexTransform = hexToGameObjectMap[h].transform;
+        Transform hexTransform = HexToGameObjectMap[h].transform;
         GameObject unitObj = Instantiate(
             prefab,
             hexTransform.position,

@@ -26,6 +26,7 @@ public class Hex : IQPathTile
     public float Moisture { get; set; }
     public float Horz_spacing { get; }
     public float Vert_spacing { get; }
+    public int MovementCost = 1;
 
     // TODO Need prop to track type (plain, grassland ...)
     // TODO Need prop to track detail (forest, mine, farm ...)
@@ -36,6 +37,11 @@ public class Hex : IQPathTile
 
     HashSet<Unit> units;
     Hex[] neighbours;
+
+    public override string ToString()
+    {
+        return $"Hex: ({Q}, {R})";
+    }
 
     public Vector3 Position()
     {
@@ -79,13 +85,15 @@ public class Hex : IQPathTile
 
     public Unit[] Units()
     {
+        if (units == null)
+            return null;
         return units.ToArray();
     }
 
     public int BaseMovementCost()
     {
         // TODO Factor in terrain type & features
-        return 1;
+        return MovementCost;
     }
 
     public IQPathTile[] GetNeighbours()
