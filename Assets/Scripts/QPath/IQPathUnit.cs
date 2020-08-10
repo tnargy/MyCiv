@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace QPath
+﻿namespace QPath
 {
     public interface IQPathUnit
     {

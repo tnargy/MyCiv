@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace QPath
 {
@@ -17,19 +16,30 @@ namespace QPath
     ///     2: The aggregate cost to enter this tile from another
     /// 
     /// </summary>
-    
+
     public static class QPath
     {
-        public static IEnumerable[] FindPath(IQPathWorld world, IQPathUnit unit, 
-            IQPathTile startTile, IQPathTile endTile)
+        public static IQPathTile[] FindPath(
+            IQPathWorld world,
+            IQPathUnit unit,
+            IQPathTile startTile,
+            IQPathTile endTile,
+            CostEstimateDelegate costEstimateFunc)
         {
             if (world == null || unit == null || startTile == null || endTile == null)
             {
-                Debug.LogError("Null values passed to FindPath");
+                Debug.LogError("Null values passed to QPath::FindPath");
                 return null;
             }
 
-            return null;
+            // Call on our actual path solver
+            QPath_AStar resolver = new QPath_AStar(world, unit, startTile, endTile, costEstimateFunc);
+
+            resolver.DoWork();
+
+            return resolver.GetList();
         }
     }
+
+    public delegate float CostEstimateDelegate(IQPathTile a, IQPathTile b);
 }

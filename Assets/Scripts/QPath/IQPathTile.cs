@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace QPath
+﻿namespace QPath
 {
     public interface IQPathTile
     {
-        IQPathTile[] GetNeighbors();
+        IQPathTile[] GetNeighbours();
         float AggregateCostToEnter(float costSoFar, IQPathTile sourceTile, IQPathUnit theUnit);
     }
 }

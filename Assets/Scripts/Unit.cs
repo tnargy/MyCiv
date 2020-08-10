@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using QPath;
+using System.Collections.Generic;
 using UnityEngine;
-using QPath;
 
 public class Unit : IQPathUnit
 {
@@ -18,6 +18,11 @@ public class Unit : IQPathUnit
 
     // TODO This should be moved to central config file
     const bool MOVEMENT_RULES_LIKE_CIV6 = false;
+    
+    public void DUMMY_PATHING_FUNCTION()
+    {
+        QPath.QPath.FindPath(Hex.HexMap, this, Hex, Hex.HexMap.GetHexAt(Hex.Q + 5, Hex.R), Hex.CostECostEstimate);
+    }
 
     public void SetHexPath(Hex[] hexPath)
     {

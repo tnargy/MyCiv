@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using QPath;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using QPath;
 
 public class HexMap : MonoBehaviour, IQPathWorld
 {
@@ -52,6 +52,16 @@ public class HexMap : MonoBehaviour, IQPathWorld
                 }
             }
         }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (units != null)
+            {
+                foreach (Unit unit in units)
+                {
+                    unit.DUMMY_PATHING_FUNCTION();
+                }
+            }
+        }
     }
 
     public Hex GetHexAt(int x, int y)
@@ -66,8 +76,17 @@ public class HexMap : MonoBehaviour, IQPathWorld
         if (x < 0)
             x += MapX;
 
-        Hex hex = hexes[x, y];
-        return hex ?? null;
+        Hex hex;
+        try
+        {
+            hex = hexes[x, y];
+        }
+        catch (System.IndexOutOfRangeException)
+        {
+            return null;
+        }
+
+        return hex;
     }
 
     virtual public void GenerateMap()

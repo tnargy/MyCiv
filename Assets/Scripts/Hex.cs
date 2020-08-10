@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using QPath;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using QPath;
 
 public class Hex : IQPathTile
 {
@@ -35,6 +36,7 @@ public class Hex : IQPathTile
     static readonly float width_multiplier = Mathf.Sqrt(3) / 2;
 
     HashSet<Unit> units;
+    Hex[] neighbours;
 
     public Vector3 Position()
     {
@@ -42,6 +44,11 @@ public class Hex : IQPathTile
             Horz_spacing * (Q + R / 2f),
             0,
             Vert_spacing * R);
+    }
+
+    public static float CostECostEstimate(IQPathTile a, IQPathTile b)
+    {
+        return Distance((Hex)a, (Hex)b);
     }
 
     public static float Distance(Hex a, Hex b)
@@ -82,9 +89,21 @@ public class Hex : IQPathTile
         return 1;
     }
 
-    public IQPathTile[] GetNeighbors()
+    public IQPathTile[] GetNeighbours()
     {
-        throw new System.NotImplementedException();
+        if (neighbours == null)
+        {
+            neighbours = new Hex[] {
+                HexMap.GetHexAt(Q + 1, R + 0),
+                HexMap.GetHexAt(Q - 1, R + 0),
+                HexMap.GetHexAt(Q + 0, R + 1),
+                HexMap.GetHexAt(Q + 0, R - 1),
+                HexMap.GetHexAt(Q + 1, R - 1),
+                HexMap.GetHexAt(Q - 1, R + 1)};
+            neighbours = (Hex[])neighbours.Where(x => x != null);
+            Debug.Log("Test");
+        }
+        return neighbours;
     }
 
     public float AggregateCostToEnter(float costSoFar, IQPathTile sourceTile, IQPathUnit theUnit)
