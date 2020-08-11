@@ -27,7 +27,8 @@ public class MouseController : MonoBehaviour
         hexUnderMouse = MouseToHex();
         if (Input.GetKeyDown(KeyCode.Escape))
             CancelUpdateFunc();
-
+        if (hexPath != null)
+            DrawPath(hexPath);
         Update_CurrentFunc();
         Update_Zoom();
         lastMousePosition = Input.mousePosition;
@@ -37,8 +38,6 @@ public class MouseController : MonoBehaviour
     void CancelUpdateFunc()
     {
         Update_CurrentFunc = Update_DetectModeStart;
-        selectedUnit = null;
-        hexPath = null;
         lineRenderer.enabled = false;
         // TODO Cleanup UI stuff
     }
@@ -67,6 +66,7 @@ public class MouseController : MonoBehaviour
             if (selectedUnit != null)
             {
                 selectedUnit.SetHexPath(hexPath);
+                hexPath = null;
             }
 
             CancelUpdateFunc();
@@ -76,7 +76,6 @@ public class MouseController : MonoBehaviour
         if (hexPath == null || hexUnderMouse != hexLastUnderMouse)
         {
             hexPath = QPath.QPath.FindPath<Hex>(hexMap, selectedUnit, selectedUnit.Hex, hexUnderMouse, Hex.CostEstimate);
-            DrawPath(hexPath);
         }
     }
     void Update_CameraDrag()
@@ -148,6 +147,7 @@ public class MouseController : MonoBehaviour
             selectedUnit = units[0];
             Debug.Log("Selected Unit");
         }
+        hexPath = selectedUnit.GetHexPath() ?? null;
     }
 
     void DrawPath(Hex[] hexPath)

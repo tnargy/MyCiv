@@ -26,10 +26,10 @@ public class Hex : IQPathTile
     public float Moisture { get; set; }
     public float Horz_spacing { get; }
     public float Vert_spacing { get; }
-    public float MovementCost = 1f;
 
-    // TODO Need prop to track type (plain, grassland ...)
-    // TODO Need prop to track detail (forest, mine, farm ...)
+    public enum TERRAINTYPE { Water, Dessert, Plains, Grassland, Forest, Jungle, Mountain};
+    public TERRAINTYPE Terrain = TERRAINTYPE.Water;
+    public bool isHill = false;
 
     public readonly HexMap HexMap;
     private readonly float diameter, width;
@@ -93,7 +93,25 @@ public class Hex : IQPathTile
 
     public float BaseMovementCost()
     {
-        return MovementCost;
+        float baseMovement;
+        switch (Terrain)
+        {
+            case TERRAINTYPE.Water:
+            case TERRAINTYPE.Mountain:
+                baseMovement = -1;
+                break;
+            case TERRAINTYPE.Forest:
+            case TERRAINTYPE.Jungle:
+                baseMovement = 2;
+                break;
+            case TERRAINTYPE.Dessert:
+            case TERRAINTYPE.Plains:
+            case TERRAINTYPE.Grassland:
+            default:
+                baseMovement = 1;
+                break;
+        }
+        return baseMovement;
     }
 
     public IQPathTile[] GetNeighbours()

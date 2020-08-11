@@ -169,7 +169,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
                         {
                             p.y += 0.25f;
                         }
-                        h.MovementCost = 2;
+                        h.Terrain = Hex.TERRAINTYPE.Jungle;
                         Instantiate(ForestPrefab, p, Quaternion.identity, hexObj.transform);
                     }
                     else if (h.Moisture >= MoistureForest)
@@ -180,20 +180,23 @@ public class HexMap : MonoBehaviour, IQPathWorld
                         {
                             p.y += 0.25f;
                         }
-                        h.MovementCost = 2;
+                        h.Terrain = Hex.TERRAINTYPE.Forest;
                         Instantiate(ForestPrefab, p, Quaternion.identity, hexObj.transform);
                     }
                     else if (h.Moisture >= MoistureGrasslands)
                     {
                         mr.material = MatGrasslands;
+                        h.Terrain = Hex.TERRAINTYPE.Grassland;
                     }
                     else if (h.Moisture >= MoisturePlains)
                     {
                         mr.material = MatPlains;
+                        h.Terrain = Hex.TERRAINTYPE.Plains;
                     }
                     else
                     {
                         mr.material = MatDesert;
+                        h.Terrain = Hex.TERRAINTYPE.Dessert;
                     }
                 }
 
@@ -202,23 +205,21 @@ public class HexMap : MonoBehaviour, IQPathWorld
                 {
                     mr.material = MatMountain;
                     mf.mesh = MeshMountain;
-                    h.MovementCost = -1;
+                    h.Terrain = Hex.TERRAINTYPE.Mountain;
                 }
                 else if (h.Elevation >= HeightHill)
                 {
                     mf.mesh = MeshHill;
-                    h.MovementCost = 2;
+                    h.isHill = true;
                 }
                 else if (h.Elevation >= HeightFlat)
                 {
                     mf.mesh = MeshFlat;
-                    h.MovementCost = 1.001f;
                 }
                 else
                 {
                     mr.material = MatOcean;
                     mf.mesh = MeshWater;
-                    h.MovementCost = -1;
                 }
             }
         }

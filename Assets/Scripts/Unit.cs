@@ -44,6 +44,16 @@ public class Unit : IQPathUnit
             hexPath.Dequeue();  // Skip current tile.
     }
 
+    public Hex[] GetHexPath()
+    {
+        if (hexPath == null)
+            return null;
+        Hex[] path = new Hex[hexPath.Count + 1];
+        path[0] = Hex;
+        hexPath.ToArray().CopyTo(path, 1);
+        return path;
+    }
+
     public void SetHex(Hex newHex)
     {
         Hex oldHex = Hex;
@@ -69,6 +79,7 @@ public class Unit : IQPathUnit
 
     public float MovementCostToEnterHex(Hex hex)
     {
+        // TODO: Add Unit attributes
         return hex.BaseMovementCost();
     }
 
@@ -126,4 +137,5 @@ public class Unit : IQPathUnit
     {
         return 1f;
     }
+
 }
