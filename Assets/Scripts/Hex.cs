@@ -39,6 +39,8 @@ public class Hex : IQPathTile
     public Unit[] Units
     {
         get {
+            if (units == null)
+                return null;
             return units.ToArray();
         }
     }

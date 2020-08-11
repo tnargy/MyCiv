@@ -13,10 +13,12 @@ public class MouseController : MonoBehaviour
     UpdateFunc Update_CurrentFunc;
     private Hex hexLastUnderMouse;
     private Hex hexUnderMouse;
+    LineRenderer lineRenderer;
 
     private void Start()
     {
         hexMap = GameObject.FindObjectOfType<HexMap>();
+        lineRenderer = transform.GetComponentInChildren<LineRenderer>();
         Update_CurrentFunc = Update_DetectModeStart;
     }
 
@@ -36,6 +38,8 @@ public class MouseController : MonoBehaviour
     {
         Update_CurrentFunc = Update_DetectModeStart;
         selectedUnit = null;
+        hexPath = null;
+        lineRenderer.enabled = false;
         // TODO Cleanup UI stuff
     }
 
@@ -43,12 +47,7 @@ public class MouseController : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            Unit[] units = hexUnderMouse.Units;
-            if (units.Length > 0)
-            {
-                selectedUnit = units[0];
-                Debug.Log("Selected Unit");
-            }
+            SelectUnit();
         }
         else if (selectedUnit != null && Input.GetMouseButton(1))
         {
@@ -77,6 +76,7 @@ public class MouseController : MonoBehaviour
         if (hexPath == null || hexUnderMouse != hexLastUnderMouse)
         {
             hexPath = QPath.QPath.FindPath<Hex>(hexMap, selectedUnit, selectedUnit.Hex, hexUnderMouse, Hex.CostEstimate);
+            DrawPath(hexPath);
         }
     }
     void Update_CameraDrag()
@@ -139,4 +139,34 @@ public class MouseController : MonoBehaviour
 
         return null;
     }
+
+    void SelectUnit()
+    {
+        Unit[] units = hexUnderMouse.Units;
+        if (units != null && units.Length > 0)
+        {
+            selectedUnit = units[0];
+            Debug.Log("Selected Unit");
+        }
+    }
+
+    void DrawPath(Hex[] hexPath)
+    {
+        if (hexPath.Length == 0)
+        {
+            lineRenderer.enabled = false;
+            return;
+        }
+        lineRenderer.enabled = true;
+
+        Vector3[] lineTiles = new Vector3[hexPath.Length];
+        lineRenderer.positionCount = lineTiles.Length;
+        for (int i = 0; i < hexPath.Length; i++)
+        {
+            GameObject hexObj = hexMap.GetGameObjectFromHex(hexPath[i]);
+            lineTiles[i] = hexObj.transform.position + (Vector3.up * 0.1f);
+        }
+        lineRenderer.SetPositions(lineTiles);
+    }
+
 }
