@@ -55,30 +55,32 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\MouseController.cs" />
-    <Compile Include="Assets\Scripts\HexBehavior.cs" />
-    <Compile Include="Assets\Scripts\Hex.cs" />
-    <Compile Include="Assets\Scripts\CameraMotion.cs" />
-    <Compile Include="Assets\Scripts\Unit.cs" />
-    <Compile Include="Assets\Scripts\UnitView.cs" />
-    <Compile Include="Assets\Scripts\HexMap.cs" />
-    <Compile Include="Assets\Scripts\HexMap_Continent.cs" />
     <Compile Include="Assets\Scripts\QPath\QPath_AStar.cs" />
     <Compile Include="Assets\Scripts\QPath\PriorityQueue.cs" />
+    <Compile Include="Assets\Scripts\MouseController.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\IPriorityQueue.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\FastPriorityQueue.cs" />
+    <Compile Include="Assets\Scripts\HexBehavior.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\IFixedSizePriorityQueue.cs" />
     <Compile Include="Assets\Scripts\QPath\IQPathWorld.cs" />
+    <Compile Include="Assets\Scripts\Hex.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\GenericPriorityQueue.cs" />
     <Compile Include="Assets\Scripts\QPath\QPath.cs" />
+    <Compile Include="Assets\Scripts\CameraMotion.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\FastPriorityQueueNode.cs" />
+    <Compile Include="Assets\Scripts\Unit.cs" />
+    <Compile Include="Assets\Scripts\UnitView.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\SimplePriorityQueue.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\Properties\AssemblyInfo.cs" />
+    <Compile Include="Assets\Scripts\HexMap.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\StablePriorityQueueNode.cs" />
+    <Compile Include="Assets\Scripts\HexMap_Continent.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\StablePriorityQueue.cs" />
     <Compile Include="Assets\Scripts\QPath\IQPathUnit.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\GenericPriorityQueueNode.cs" />
     <Compile Include="Assets\Scripts\QPath\IQPathTile.cs" />
+    <Compile Include="Assets\Scripts\UnitSelectionPanel.cs" />
+    <Compile Include="Assets\Scripts\GameController.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

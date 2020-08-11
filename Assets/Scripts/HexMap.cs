@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class HexMap : MonoBehaviour, IQPathWorld
 {
+    protected GameController GM;
     public GameObject HexPrefab;
 
     public Mesh MeshWater;
@@ -21,48 +22,25 @@ public class HexMap : MonoBehaviour, IQPathWorld
     public Material MatMountain;
     public Material MatDesert;
 
-    public GameObject UnitWarriorPrefab;
-
     public static float mapHeightLimit;
     public int MapX = 60, MapY = 30;
     public float HeightMountain = 0.85f, HeightHill = 0.6f, HeightFlat = 0f;
     public float MoistureJungle = 0.66f, MoistureForest = 0.33f;
     public float MoistureGrasslands = 0f, MoisturePlains = -0.5f;
     private Hex[,] hexes;
-    private HashSet<Unit> units;
+
     private Dictionary<Hex, GameObject> hexToGameObjectMap;
     private Dictionary<GameObject, Hex> gameObjectToHexMap;
-    private Dictionary<Unit, GameObject> unitToGameObjectMap;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        GenerateMap();
-    }
+        GM = FindObjectOfType<GameController>();
+        hexToGameObjectMap = new Dictionary<Hex, GameObject>();
+        gameObjectToHexMap = new Dictionary<GameObject, Hex>();
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (units != null)
-            {
-                foreach (Unit unit in units)
-                {
-                    unit.DoTurn();
-                }
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            if (units != null)
-            {
-                foreach (Unit unit in units)
-                {
-                    unit.DUMMY_PATHING_FUNCTION();
-                }
-            }
-        }
+        GenerateMap();
     }
 
     public Hex GetHexAt(int x, int y)
@@ -94,8 +72,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
     virtual public void GenerateMap()
     {
         hexes = new Hex[MapX, MapY];
-        hexToGameObjectMap = new Dictionary<Hex, GameObject>();
-        gameObjectToHexMap = new Dictionary<GameObject, Hex>();
+        
 
         // Generate Ocean Map
         for (int col = 0; col < MapX; col++)
@@ -236,28 +213,6 @@ public class HexMap : MonoBehaviour, IQPathWorld
             }
         }
         return results.ToArray();
-    }
-
-    public void SpawnUnitAt(Unit unit, GameObject prefab, int q, int r)
-    {
-        if (units == null)
-        {
-            units = new HashSet<Unit>();
-            unitToGameObjectMap = new Dictionary<Unit, GameObject>();
-        }
-
-        Hex h = GetHexAt(q, r);
-        Transform hexTransform = hexToGameObjectMap[h].transform;
-        GameObject unitObj = Instantiate(
-            prefab,
-            hexTransform.position,
-            Quaternion.identity,
-            hexTransform);
-
-        units.Add(unit);
-        unitToGameObjectMap.Add(unit, unitObj);
-        unit.SetHex(h);
-        unit.OnUnitMoved += unitObj.GetComponent<UnitView>().OnUnitMoved;
     }
 
     public GameObject GetGameObjectFromHex(Hex h)

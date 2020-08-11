@@ -65,8 +65,8 @@ public class HexMap_Continent : HexMap
         }
 
         UpdateHexVisuals();
-        Unit unit = new Unit();
-        SpawnUnitAt(unit, UnitWarriorPrefab, 25, 17);
+        Hex hex = GetHexAt(25, 17);
+        GM.SpawnUnitAt(UNITTYPE.Warrior, hex, GetGameObjectFromHex(hex).transform);
     }
 
     private void ElevateArea(int q, int r, int range, float centerHeight = 0.8f)

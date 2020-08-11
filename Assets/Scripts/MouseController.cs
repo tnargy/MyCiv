@@ -1,13 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class MouseController : MonoBehaviour
 {
     HexMap hexMap;
     Vector3 lastMouseGroundPlanePosition;
     Vector3 lastMousePosition;
-    Unit selectedUnit = null;
     Hex[] hexPath;
+    public Unit SelectedUnit;
     public LayerMask LMHex;
+    public GameObject UnitSelectedPanel;
 
     delegate void UpdateFunc();
     UpdateFunc Update_CurrentFunc;
@@ -15,9 +17,13 @@ public class MouseController : MonoBehaviour
     private Hex hexUnderMouse;
     LineRenderer lineRenderer;
 
+    
+
     private void Start()
     {
-        hexMap = GameObject.FindObjectOfType<HexMap>();
+        UnitSelectedPanel.SetActive(false);
+
+        hexMap = FindObjectOfType<HexMap>();
         lineRenderer = transform.GetComponentInChildren<LineRenderer>();
         Update_CurrentFunc = Update_DetectModeStart;
     }
@@ -26,7 +32,7 @@ public class MouseController : MonoBehaviour
     {
         hexUnderMouse = MouseToHex();
         if (Input.GetKeyDown(KeyCode.Escape))
-            CancelUpdateFunc();
+            ClearUI();
         if (hexPath != null)
             DrawPath(hexPath);
         Update_CurrentFunc();
@@ -35,11 +41,16 @@ public class MouseController : MonoBehaviour
         hexLastUnderMouse = hexUnderMouse;
     }
 
-    void CancelUpdateFunc()
+    void ResetUpdateFunc()
     {
         Update_CurrentFunc = Update_DetectModeStart;
-        lineRenderer.enabled = false;
-        // TODO Cleanup UI stuff
+    }
+
+    void ClearUI() {
+        Update_CurrentFunc = Update_DetectModeStart;
+        ClearPath();
+        UnitSelectedPanel.SetActive(false);
+        SelectedUnit = null;
     }
 
     void Update_DetectModeStart()
@@ -48,7 +59,7 @@ public class MouseController : MonoBehaviour
         {
             SelectUnit();
         }
-        else if (selectedUnit != null && Input.GetMouseButton(1))
+        else if (SelectedUnit != null && Input.GetMouseButton(1))
         {
             Update_CurrentFunc = Update_UnitMovement;
         }
@@ -61,28 +72,31 @@ public class MouseController : MonoBehaviour
     }
     void Update_UnitMovement()
     {
-        if (Input.GetMouseButtonUp(1)  || selectedUnit == null)
+        if (Input.GetMouseButtonUp(1)  || SelectedUnit == null)
         {
-            if (selectedUnit != null)
+            if (SelectedUnit != null)
             {
-                selectedUnit.SetHexPath(hexPath);
-                hexPath = null;
+                SelectedUnit.SetHexPath(hexPath);
             }
-
-            CancelUpdateFunc();
+            ResetUpdateFunc();
             return;
-        }
-
-        if (hexPath == null || hexUnderMouse != hexLastUnderMouse)
+        }else
         {
-            hexPath = QPath.QPath.FindPath<Hex>(hexMap, selectedUnit, selectedUnit.Hex, hexUnderMouse, Hex.CostEstimate);
+            hexPath = QPath.QPath.FindPath<Hex>(hexMap, SelectedUnit, SelectedUnit.Hex, hexUnderMouse, Hex.CostEstimate);
         }
     }
+
+    private void ClearPath()
+    {
+        hexPath = null;
+        lineRenderer.enabled = false;
+    }
+
     void Update_CameraDrag()
     {
         if (Input.GetMouseButtonUp(0))
         {
-            CancelUpdateFunc();
+            ResetUpdateFunc();
             return;
         }
 
@@ -144,10 +158,15 @@ public class MouseController : MonoBehaviour
         Unit[] units = hexUnderMouse.Units;
         if (units != null && units.Length > 0)
         {
-            selectedUnit = units[0];
-            Debug.Log("Selected Unit");
+            SelectedUnit = units[0];
+            UnitSelectedPanel.SetActive(true);
+            hexPath = SelectedUnit.GetHexPath() ?? null;
         }
-        hexPath = selectedUnit.GetHexPath() ?? null;
+        else
+        {
+            ResetUpdateFunc();
+            ClearUI();
+        }
     }
 
     void DrawPath(Hex[] hexPath)

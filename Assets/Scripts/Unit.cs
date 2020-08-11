@@ -9,7 +9,8 @@ public class Unit : IQPathUnit
     public string Name = "Unnamed";
     public int HP = 100, Strength = 8;
     public float Movement = 2f;
-    public int MovementRemaining = 2;
+    public float MovementRemaining = 2f;
+    public UNITTYPE UnitType = UNITTYPE.Warrior;
 
     public Hex Hex { get; protected set; }
 
@@ -20,17 +21,6 @@ public class Unit : IQPathUnit
 
     // TODO This should be moved to central config file
     const bool MOVEMENT_RULES_LIKE_CIV6 = false;
-
-    public void DUMMY_PATHING_FUNCTION()
-    {
-        Hex[] pathTiles = QPath.QPath.FindPath<Hex>(Hex.HexMap,
-                                                      this,
-                                                      Hex,
-                                                      Hex.HexMap.GetHexAt(Hex.Q + 5, Hex.R),
-                                                      Hex.CostEstimate);
-        Debug.Log($"Got pathfinding path length of {pathTiles.Length}");
-        SetHexPath(pathTiles);
-    }
 
     public void ClearHexPath()
     {
@@ -65,16 +55,41 @@ public class Unit : IQPathUnit
         OnUnitMoved?.Invoke(oldHex, newHex);
     }
 
-    public void DoTurn()
+    public bool UnitWaitingForOrders()
     {
-        if (hexPath == null || hexPath.Count == 0)
+        if ((hexPath == null || hexPath.Count == 0) && MovementRemaining > 0)
         {
-            return;
+            // TODO: Fortify/Alert/SkipTurn
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Processes one tile worth of movement for the unit
+    /// </summary>
+    /// <returns>Returns true if this should be called immediately again.</returns>
+    public bool DoMove()
+    {
+        if (hexPath == null || hexPath.Count == 0 || MovementRemaining <= 0)
+        {
+            return false;
+        }
+
+        float costToEnter = MovementCostToEnterHex(hexPath.Peek());
+        if (costToEnter > MovementRemaining && MovementRemaining > Movement && MOVEMENT_RULES_LIKE_CIV6)
+        {
+            // Can't enter this turn.
+            return false;
         }
 
         Hex newHex = hexPath.Dequeue();
-
         SetHex(newHex);
+
+        MovementRemaining -= costToEnter;
+        if (MovementRemaining < 0)
+            Debug.LogWarning($"Unit: {Name} has {MovementRemaining} moves.");
+        return hexPath != null && MovementRemaining > 0;
     }
 
     public float MovementCostToEnterHex(Hex hex)
