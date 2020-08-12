@@ -9,7 +9,15 @@
 
     virtual public void SetHex(Hex newHex)
     {
-        Hex oldHex = Hex;
+        Hex oldHex;
+        if (Hex != null)
+        {
+            oldHex = Hex;
+        }
+        else
+        {
+            oldHex = newHex;
+        }
         Hex = newHex;
 
         OnObjectMoved?.Invoke(oldHex, newHex);
