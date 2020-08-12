@@ -1559,7 +1559,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedUnit: {fileID: 1996122360}
   Movement: {fileID: 1184336413}
-  PathLength: {fileID: 1341011200}
+  DebugString: {fileID: 1341011200}
   BuildCityAction: {fileID: 582172858}
 --- !u!1 &1341011198
 GameObject:
@@ -1573,7 +1573,7 @@ GameObject:
   - component: {fileID: 1341011201}
   - component: {fileID: 1341011200}
   m_Layer: 5
-  m_Name: PathLength
+  m_Name: DebugString
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2047,9 +2047,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a292fc2157dfd0a488214fb22897a3e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LMHex:
-    serializedVersion: 2
-    m_Bits: 256
   UnitSelectedPanel: {fileID: 1265214156}
 --- !u!4 &2061444899
 Transform:
@@ -2174,7 +2171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.6, g: 0.72156864, b: 0.8470589, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

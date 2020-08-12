@@ -6,7 +6,7 @@ public class UnitSelectionPanel : MonoBehaviour
     MouseController mouseController;
     public TextMeshProUGUI SelectedUnit;
     public TextMeshProUGUI Movement;
-    public TextMeshProUGUI PathLength;
+    public TextMeshProUGUI DebugString;
     public GameObject BuildCityAction;
 
     // Start is called before the first frame update
@@ -24,9 +24,9 @@ public class UnitSelectionPanel : MonoBehaviour
             Movement.text = $"Movement: {mouseController.SelectedUnit.MovementRemaining}/{mouseController.SelectedUnit.Movement}";
             Hex[] path = mouseController.SelectedUnit.GetHexPath();
             if (path != null)
-                PathLength.text = $"Path Length: {path.Length - 1}";
+                DebugString.text = $"Path Length: {path.Length - 1}";
             else
-                PathLength.text = "";
+                DebugString.text = "";
             BuildCityAction.SetActive(mouseController.SelectedUnit.CanBuildCities
                 && mouseController.SelectedUnit.Hex.City == null
                 && mouseController.SelectedUnit.Hex.Terrain != Hex.TERRAINTYPE.Forest

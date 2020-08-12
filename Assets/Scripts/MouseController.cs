@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class MouseController : MonoBehaviour
 {
@@ -8,15 +9,14 @@ public class MouseController : MonoBehaviour
     Vector3 lastMousePosition;
     Hex[] hexPath;
     public Unit SelectedUnit;
-    public LayerMask LMHex;
     public GameObject UnitSelectedPanel;
 
     delegate void UpdateFunc();
     UpdateFunc Update_CurrentFunc;
-    private Hex hexUnderMouse;
     LineRenderer lineRenderer;
 
     private GameController GM;
+    private int objIndex = -1;
 
     private void Start()
     {
@@ -30,7 +30,6 @@ public class MouseController : MonoBehaviour
 
     private void Update()
     {
-        hexUnderMouse = MouseToHex();
         if (Input.GetKeyDown(KeyCode.Escape))
             ClearUI();
         if (hexPath != null)
@@ -57,10 +56,7 @@ public class MouseController : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            if (hexUnderMouse.City != null)
-                SelectCity();
-            else
-                SelectUnit();
+            SelectMapObject(MouseToHex());
         }
         else if (SelectedUnit != null && Input.GetMouseButton(1))
         {
@@ -72,6 +68,42 @@ public class MouseController : MonoBehaviour
             lastMouseGroundPlanePosition = GetHitPos();
             Update_CurrentFunc();
         }
+    }
+
+    private void SelectMapObject(Hex hex)
+    {
+        Unit[] units = hex.Units;
+        City city = hex.City;
+
+        if (units != null)
+        {
+            objIndex++;
+            if (objIndex == units.Length)
+            {
+                if (city != null)
+                    SelectCity();
+                objIndex = -1;
+            }
+            else
+                SelectUnit(units, objIndex);
+        }
+        else if(city != null)
+        {
+            SelectCity();
+        }
+        else
+        {
+            ResetUpdateFunc();
+            ClearUI();
+            objIndex = -1;
+        }
+    }
+
+    void SelectUnit(Unit[] unit, int objIndex)
+    {
+        SelectedUnit = unit[objIndex];
+        UnitSelectedPanel.SetActive(true);
+        hexPath = SelectedUnit.GetHexPath() ?? null;
     }
 
     private void SelectCity()
@@ -93,7 +125,7 @@ public class MouseController : MonoBehaviour
         }
         else
         {
-            hexPath = QPath.QPath.FindPath<Hex>(hexMap, SelectedUnit, SelectedUnit.Hex, hexUnderMouse, Hex.CostEstimate);
+            hexPath = QPath.QPath.FindPath<Hex>(hexMap, SelectedUnit, SelectedUnit.Hex, MouseToHex(), Hex.CostEstimate);
         }
     }
 
@@ -152,7 +184,7 @@ public class MouseController : MonoBehaviour
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitInfo;
 
-        if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, LMHex.value))
+        if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, LayerMask.GetMask("HexTile")))
         {
             GameObject hexObj = hitInfo.rigidbody.gameObject;
             Hex hex = hexMap.GetHexFromGameObject(hexObj);
@@ -161,22 +193,6 @@ public class MouseController : MonoBehaviour
         }
 
         return null;
-    }
-
-    void SelectUnit()
-    {
-        Unit[] units = hexUnderMouse.Units;
-        if (units != null && units.Length > 0)
-        {
-            SelectedUnit = units[0];
-            UnitSelectedPanel.SetActive(true);
-            hexPath = SelectedUnit.GetHexPath() ?? null;
-        }
-        else
-        {
-            ResetUpdateFunc();
-            ClearUI();
-        }
     }
 
     void DrawPath(Hex[] hexPath)

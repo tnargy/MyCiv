@@ -26,9 +26,11 @@ public class Unit : MapObject, IQPathUnit
 
     override public void SetHex(Hex newHex)
     {
-        base.SetHex(newHex);
         if (Hex != null)
+        {
             Hex.RemoveUnit(this);
+        }
+        base.SetHex(newHex);
         Hex.AddUnit(this);
     }
 
@@ -90,7 +92,6 @@ public class Unit : MapObject, IQPathUnit
 
     public float MovementCostToEnterHex(Hex hex)
     {
-        // TODO: Add Unit attributes
         return hex.BaseMovementCost();
     }
 
@@ -151,7 +152,11 @@ public class Unit : MapObject, IQPathUnit
 
     public void BuildCity()
     {
-        Debug.Log("Building City");
-        Hex.AddCity();
+        if (UnitWaitingForOrders())
+        {
+            Hex.AddCity();
+            // Use up all your movement
+            Movement = 0;
+        }
     }
 }
