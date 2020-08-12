@@ -6,21 +6,31 @@ using UnityEngine;
 
 public class Unit : IQPathUnit
 {
-    public string Name = "Unnamed";
-    public int HP = 100, Strength = 8;
-    public float Movement = 2f;
-    public float MovementRemaining = 2f;
-    public UNITTYPE UnitType = UNITTYPE.Warrior;
+    public string Name;
+    public int HP, Strength;
+    public float Movement, MovementRemaining;
+    public UNITTYPE UnitType;
+    private Queue<Hex> hexPath;
 
     public Hex Hex { get; protected set; }
 
     public delegate void UnitMovedDelegate(Hex oldHex, Hex newHex);
     public event UnitMovedDelegate OnUnitMoved;
 
-    Queue<Hex> hexPath;
 
     // TODO This should be moved to central config file
     const bool MOVEMENT_RULES_LIKE_CIV6 = false;
+
+    public Unit(string name, int hP, int strength, float movement, UNITTYPE unitType)
+    {
+        Name = name;
+        HP = hP;
+        Strength = strength;
+        Movement = movement;
+        MovementRemaining = movement;
+        UnitType = unitType;
+        hexPath = new Queue<Hex>();
+    }
 
     public void ClearHexPath()
     {
@@ -55,6 +65,11 @@ public class Unit : IQPathUnit
         OnUnitMoved?.Invoke(oldHex, newHex);
     }
 
+    internal void RefreshMovement()
+    {
+        MovementRemaining = Movement;
+    }
+
     public bool UnitWaitingForOrders()
     {
         if ((hexPath == null || hexPath.Count == 0) && MovementRemaining > 0)
@@ -86,9 +101,7 @@ public class Unit : IQPathUnit
         Hex newHex = hexPath.Dequeue();
         SetHex(newHex);
 
-        MovementRemaining -= costToEnter;
-        if (MovementRemaining < 0)
-            Debug.LogWarning($"Unit: {Name} has {MovementRemaining} moves.");
+        MovementRemaining = Mathf.Max(MovementRemaining - costToEnter, 0);
         return hexPath != null && MovementRemaining > 0;
     }
 

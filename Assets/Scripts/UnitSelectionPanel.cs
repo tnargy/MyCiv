@@ -20,7 +20,7 @@ public class UnitSelectionPanel : MonoBehaviour
         if (mouseController.SelectedUnit != null)
         {
             SelectedUnit.text = $"Selected Unit: {mouseController.SelectedUnit.Name}";
-            Movement.text = $"Movement: {mouseController.SelectedUnit.Movement}";
+            Movement.text = $"Movement: {mouseController.SelectedUnit.MovementRemaining}/{mouseController.SelectedUnit.Movement}";
             Hex[] path = mouseController.SelectedUnit.GetHexPath();
             if (path != null)
                 PathLength.text = $"Path Length: {path.Length - 1}";

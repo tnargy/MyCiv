@@ -13,14 +13,14 @@ public class MouseController : MonoBehaviour
 
     delegate void UpdateFunc();
     UpdateFunc Update_CurrentFunc;
-    private Hex hexLastUnderMouse;
     private Hex hexUnderMouse;
     LineRenderer lineRenderer;
 
-    
+    private GameController GM;
 
     private void Start()
     {
+        GM = FindObjectOfType<GameController>();
         UnitSelectedPanel.SetActive(false);
 
         hexMap = FindObjectOfType<HexMap>();
@@ -38,7 +38,6 @@ public class MouseController : MonoBehaviour
         Update_CurrentFunc();
         Update_Zoom();
         lastMousePosition = Input.mousePosition;
-        hexLastUnderMouse = hexUnderMouse;
     }
 
     void ResetUpdateFunc()
@@ -77,6 +76,7 @@ public class MouseController : MonoBehaviour
             if (SelectedUnit != null)
             {
                 SelectedUnit.SetHexPath(hexPath);
+                StartCoroutine(GM.DoUnitMoves(SelectedUnit));
             }
             ResetUpdateFunc();
             return;

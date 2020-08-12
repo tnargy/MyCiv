@@ -12,13 +12,17 @@ public class UnitView : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position != newPosition)
+        if (Vector3.Distance(transform.position, newPosition) > 0.1f)
         {
             transform.position = Vector3.SmoothDamp(
                 transform.position,
                 newPosition,
                 ref currentVelocity,
                 smoothTime);
+        }
+        else
+        {
+            FindObjectOfType<GameController>().AnimationIsPlaying = false;
         }
     }
 
@@ -35,6 +39,10 @@ public class UnitView : MonoBehaviour
         {
             // Big Jump
             transform.position = newPosition;
+        }
+        else
+        {
+            FindObjectOfType<GameController>().AnimationIsPlaying = true;
         }
     }
 }
