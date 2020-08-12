@@ -41,4 +41,10 @@ public class CameraMotion : MonoBehaviour
             oldPosition = transform.position;
         }
     }
+
+    public void MoveToHex(Hex h)
+    {
+        h = h.HexMap.GetHexAt(h.Q + 1, h.R - 2);
+        transform.position = h.HexMap.GetGameObjectFromHex(h).transform.position;
+    }
 }

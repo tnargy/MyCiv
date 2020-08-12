@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class HexMap_Continent : HexMap
 {
@@ -8,7 +9,7 @@ public class HexMap_Continent : HexMap
     override public void GenerateMap()
     {
         base.GenerateMap();
-        Random.InitState(0);
+        // Random.InitState(0);
 
         // Create Continents above sea level
         int continentSpacing = MapX / numContinents;
@@ -65,8 +66,29 @@ public class HexMap_Continent : HexMap
         }
 
         UpdateHexVisuals();
-        Hex hex = GetHexAt(25, 17);
-        GM.SpawnUnitAt(UNITTYPE.Warrior, hex, GetGameObjectFromHex(hex).transform);
+        SpawnPlayer();
+    }
+
+    private void SpawnPlayer(bool zoomCamera = true)
+    {
+        bool respawn = true;
+        Hex spawnHex = GetHexAt(0, 0);
+        while (respawn)
+        {
+            respawn = false;
+            spawnHex = GetHexAt(Random.Range(2, MapX - 2), Random.Range(2, MapY - 2));
+            Hex[] spawnArea = GetHexesWithinRangeOf(spawnHex, 2);
+            foreach (Hex h in spawnArea)
+            {
+                if (h.Elevation < HeightFlat)
+                    respawn = true;
+            }
+            if (spawnHex.Terrain != Hex.TERRAINTYPE.Plains || spawnHex.isHill)
+                respawn = true;
+        }
+        GM.SpawnUnitAt(UNITTYPE.Warrior, spawnHex, GetGameObjectFromHex(spawnHex).transform);
+        if (zoomCamera)
+            Camera.main.GetComponent<CameraMotion>().MoveToHex(spawnHex);
     }
 
     private void ElevateArea(int q, int r, int range, float centerHeight = 0.8f)

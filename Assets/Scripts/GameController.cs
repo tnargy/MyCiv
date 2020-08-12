@@ -19,6 +19,19 @@ public class GameController: MonoBehaviour
         unitToGameObjectMap = new Dictionary<Unit, GameObject>();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            EndTurn();
+        }
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+        Debug.Log("Game is exiting");
+    }
     IEnumerator DoAllUnitMoves()
     {
         if (units != null)
