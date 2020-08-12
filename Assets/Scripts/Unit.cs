@@ -1,30 +1,22 @@
 ﻿using QPath;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
-public class Unit : IQPathUnit
+public class Unit : MapObject, IQPathUnit
 {
-    public string Name;
-    public int HP, Strength;
     public float Movement, MovementRemaining;
     public UNITTYPE UnitType;
     private Queue<Hex> hexPath;
 
-    public Hex Hex { get; protected set; }
-
-    public delegate void UnitMovedDelegate(Hex oldHex, Hex newHex);
-    public event UnitMovedDelegate OnUnitMoved;
-
+    public bool CanBuildCities = false;
 
     // TODO This should be moved to central config file
     const bool MOVEMENT_RULES_LIKE_CIV6 = false;
 
-    public Unit(string name, int hP, int strength, float movement, UNITTYPE unitType)
+    public Unit(string name, int hp, int strength, float movement, UNITTYPE unitType)
     {
         Name = name;
-        HP = hP;
+        HP = hp;
         Strength = strength;
         Movement = movement;
         MovementRemaining = movement;
@@ -32,16 +24,12 @@ public class Unit : IQPathUnit
         hexPath = new Queue<Hex>();
     }
 
-    public void ClearHexPath()
+    override public void SetHex(Hex newHex)
     {
-        hexPath = new Queue<Hex>();
-    }
-
-    public void SetHexPath(Hex[] path)
-    {
-        hexPath = new Queue<Hex>(path);
-        if (hexPath.Count > 0)
-            hexPath.Dequeue();  // Skip current tile.
+        base.SetHex(newHex);
+        if (Hex != null)
+            Hex.RemoveUnit(this);
+        Hex.AddUnit(this);
     }
 
     public Hex[] GetHexPath()
@@ -53,16 +41,11 @@ public class Unit : IQPathUnit
         hexPath.ToArray().CopyTo(path, 1);
         return path;
     }
-
-    public void SetHex(Hex newHex)
+    public void SetHexPath(Hex[] path)
     {
-        Hex oldHex = Hex;
-        if (Hex != null)
-            Hex.RemoveUnit(this);
-        Hex = newHex;
-        Hex.AddUnit(this);
-
-        OnUnitMoved?.Invoke(oldHex, newHex);
+        hexPath = new Queue<Hex>(path);
+        if (hexPath.Count > 0)
+            hexPath.Dequeue();  // Skip current tile.
     }
 
     internal void RefreshMovement()
@@ -166,4 +149,9 @@ public class Unit : IQPathUnit
         return 1f;
     }
 
+    public void BuildCity()
+    {
+        Debug.Log("Building City");
+        Hex.AddCity();
+    }
 }

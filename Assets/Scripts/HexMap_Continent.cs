@@ -1,5 +1,4 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HexMap_Continent : HexMap
 {
@@ -9,8 +8,7 @@ public class HexMap_Continent : HexMap
     override public void GenerateMap()
     {
         base.GenerateMap();
-        // Random.InitState(0);
-
+        
         // Create Continents above sea level
         int continentSpacing = MapX / numContinents;
         for (int c = 0; c < numContinents; c++)

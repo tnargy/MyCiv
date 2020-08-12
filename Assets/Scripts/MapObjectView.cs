@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public class UnitView : MonoBehaviour
+public class MapObjectView : MonoBehaviour
 {
     Vector3 currentVelocity, newPosition;
-    float smoothTime = 0.5f;
+    readonly float smoothTime = 0.5f;
 
     private void Start()
     {
@@ -26,12 +26,14 @@ public class UnitView : MonoBehaviour
         }
     }
 
-    public void OnUnitMoved(Hex oldHex, Hex newHex)
+    public void OnObjectMoved(Hex oldHex, Hex newHex)
     {
         // Animate moving unit
         HexMap hexMap = oldHex.HexMap;
         transform.position = hexMap.PositionFromCamera(oldHex);
         newPosition = hexMap.PositionFromCamera(newHex);
+        if (newHex.isHill)
+            newPosition.Set(newPosition.x, newPosition.y + 0.15f, newPosition.z);
         currentVelocity = Vector3.zero;
 
         transform.SetParent(hexMap.GetGameObjectFromHex(newHex).transform);

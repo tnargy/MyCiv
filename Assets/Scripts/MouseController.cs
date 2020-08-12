@@ -45,7 +45,8 @@ public class MouseController : MonoBehaviour
         Update_CurrentFunc = Update_DetectModeStart;
     }
 
-    void ClearUI() {
+    void ClearUI()
+    {
         Update_CurrentFunc = Update_DetectModeStart;
         ClearPath();
         UnitSelectedPanel.SetActive(false);
@@ -56,7 +57,10 @@ public class MouseController : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            SelectUnit();
+            if (hexUnderMouse.City != null)
+                SelectCity();
+            else
+                SelectUnit();
         }
         else if (SelectedUnit != null && Input.GetMouseButton(1))
         {
@@ -69,9 +73,15 @@ public class MouseController : MonoBehaviour
             Update_CurrentFunc();
         }
     }
+
+    private void SelectCity()
+    {
+        throw new NotImplementedException();
+    }
+
     void Update_UnitMovement()
     {
-        if (Input.GetMouseButtonUp(1)  || SelectedUnit == null)
+        if (Input.GetMouseButtonUp(1) || SelectedUnit == null)
         {
             if (SelectedUnit != null)
             {
@@ -80,7 +90,8 @@ public class MouseController : MonoBehaviour
             }
             ResetUpdateFunc();
             return;
-        }else
+        }
+        else
         {
             hexPath = QPath.QPath.FindPath<Hex>(hexMap, SelectedUnit, SelectedUnit.Hex, hexUnderMouse, Hex.CostEstimate);
         }
@@ -122,7 +133,6 @@ public class MouseController : MonoBehaviour
             Mathf.Clamp(p.y, minHeight, maxHeight),
             p.z);
 
-        //Change angle if Ctrl held down
         p = Camera.main.transform.position;
         Camera.main.transform.rotation = Quaternion.Euler(
             Mathf.Lerp(20, 90, p.y / (maxHeight / 1.5f)),
@@ -146,7 +156,7 @@ public class MouseController : MonoBehaviour
         {
             GameObject hexObj = hitInfo.rigidbody.gameObject;
             Hex hex = hexMap.GetHexFromGameObject(hexObj);
-            
+
             return hex;
         }
 

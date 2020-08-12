@@ -7,14 +7,14 @@ public class HexMap : MonoBehaviour, IQPathWorld
 {
     protected GameController GM;
     public GameObject HexPrefab;
+    public GameObject ForestPrefab;
+    public GameObject JunglePrefab;
+    public GameObject VilliagePrefab;
 
     public Mesh MeshWater;
     public Mesh MeshFlat;
     public Mesh MeshHill;
     public Mesh MeshMountain;
-
-    public GameObject ForestPrefab;
-    public GameObject JunglePrefab;
 
     public Material MatOcean;
     public Material MatPlains;
@@ -28,16 +28,18 @@ public class HexMap : MonoBehaviour, IQPathWorld
     public float MoistureJungle = 0.66f, MoistureForest = 0.33f;
     public float MoistureGrasslands = 0f, MoisturePlains = -0.5f;
     private Hex[,] hexes;
+    private HashSet<City> cities;
 
     private Dictionary<Hex, GameObject> hexToGameObjectMap;
+    private Dictionary<City, GameObject> cityToGameObjectMap;
     private Dictionary<GameObject, Hex> gameObjectToHexMap;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         GM = FindObjectOfType<GameController>();
         hexToGameObjectMap = new Dictionary<Hex, GameObject>();
+        cityToGameObjectMap = new Dictionary<City, GameObject>();
         gameObjectToHexMap = new Dictionary<GameObject, Hex>();
 
         GenerateMap();
@@ -72,7 +74,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
     virtual public void GenerateMap()
     {
         hexes = new Hex[MapX, MapY];
-        
+        cities = new HashSet<City>();
 
         // Generate Ocean Map
         for (int col = 0; col < MapX; col++)
@@ -202,6 +204,30 @@ public class HexMap : MonoBehaviour, IQPathWorld
         }
     }
 
+    public void AddCity(City city)
+    {
+        Transform hexTransform = GetGameObjectFromHex(city.Hex).transform;
+        Vector3 spawnLocation = hexTransform.position;
+        if (city.Hex.isHill)
+            spawnLocation.Set(hexTransform.position.x, hexTransform.position.y + 0.15f, hexTransform.position.z);
+
+        GameObject cityObj = Instantiate(
+            VilliagePrefab,
+            spawnLocation,
+            Quaternion.identity,
+            hexTransform);
+        cityObj.GetComponentInChildren<TextMeshProUGUI>().text = city.Name;
+
+        cityToGameObjectMap.Add(city, cityObj);
+        cities.Add(city);
+    }
+
+    public void RemoveCity(City city)
+    {
+        cityToGameObjectMap.Remove(city);
+        cities.Remove(city);
+    }
+
     public Hex[] GetHexesWithinRangeOf(Hex center, int range)
     {
         List<Hex> results = new List<Hex>();
@@ -220,6 +246,14 @@ public class HexMap : MonoBehaviour, IQPathWorld
         if (hexToGameObjectMap.ContainsKey(h))
         {
             return hexToGameObjectMap[h];
+        }
+        return null;
+    }
+    public GameObject GetGameObjectFromCity(City c)
+    {
+        if (cityToGameObjectMap.ContainsKey(c))
+        {
+            return cityToGameObjectMap[c];
         }
         return null;
     }

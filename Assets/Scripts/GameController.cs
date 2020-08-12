@@ -1,18 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public enum UNITTYPE { Warrior };
 
-public class GameController: MonoBehaviour
+public class GameController : MonoBehaviour
 {
     // TODO: Seperate unit list per player
     public HashSet<Unit> units;
     public GameObject UnitWarriorPrefab;
     public Dictionary<Unit, GameObject> unitToGameObjectMap;
     public bool AnimationIsPlaying = false;
-    
+
     private void Awake()
     {
         units = new HashSet<Unit>();
@@ -21,6 +20,7 @@ public class GameController: MonoBehaviour
 
     private void Update()
     {
+        // Hotkeys
         if (Input.GetKeyDown(KeyCode.Space))
         {
             EndTurn();
@@ -41,9 +41,9 @@ public class GameController: MonoBehaviour
             {
                 yield return DoUnitMoves(unit);
             }
-        } 
+        }
     }
-    
+
     public IEnumerator DoUnitMoves(Unit unit)
     {
         while (unit.DoMove())
@@ -74,6 +74,7 @@ public class GameController: MonoBehaviour
     public void SpawnUnitAt(UNITTYPE unitType, Hex h, Transform hexTransform)
     {
         Unit unit = new Unit("Unnamed", 100, 8, 2f, UNITTYPE.Warrior);
+        unit.CanBuildCities = true;
         GameObject unitPrefab = GetPrefabForType(unitType);
         if (unitPrefab == null)
         {
@@ -88,7 +89,7 @@ public class GameController: MonoBehaviour
             hexTransform);
 
         unit.SetHex(h);
-        unit.OnUnitMoved += unitObj.GetComponent<UnitView>().OnUnitMoved;
+        unit.OnObjectMoved += unitObj.GetComponent<MapObjectView>().OnObjectMoved;
         unitToGameObjectMap.Add(unit, unitObj);
         units.Add(unit);
     }

@@ -26,8 +26,11 @@ public class Hex : IQPathTile
     public float Moisture { get; set; }
     public float Horz_spacing { get; }
     public float Vert_spacing { get; }
+    public City City { get; protected set; }
+    private HashSet<Unit> units;
+    private Hex[] neighbours;
 
-    public enum TERRAINTYPE { Water, Dessert, Plains, Grassland, Forest, Jungle, Mountain};
+    public enum TERRAINTYPE { Water, Dessert, Plains, Grassland, Forest, Jungle, Mountain };
     public TERRAINTYPE Terrain = TERRAINTYPE.Water;
     public bool isHill = false;
 
@@ -35,17 +38,15 @@ public class Hex : IQPathTile
     private readonly float diameter, width;
     static readonly float width_multiplier = Mathf.Sqrt(3) / 2;
 
-    HashSet<Unit> units;
     public Unit[] Units
     {
-        get {
+        get
+        {
             if (units == null)
                 return null;
             return units.ToArray();
         }
     }
-
-    Hex[] neighbours;
 
     public override string ToString()
     {
@@ -89,6 +90,18 @@ public class Hex : IQPathTile
     {
         if (units != null)
             units.Remove(unit);
+    }
+
+    public void AddCity()
+    {
+        City = new City(this, "Tulsa");
+        HexMap.AddCity(City);
+    }
+
+    public void RemoveCity()
+    {
+        HexMap.RemoveCity(City);
+        City = null;
     }
 
     public float BaseMovementCost()

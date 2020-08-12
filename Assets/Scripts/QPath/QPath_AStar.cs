@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace QPath
 {
@@ -76,7 +75,7 @@ namespace QPath
                         // Values less than zero represent an invalid/impassable tile
                         continue;
                     }
-                    
+
                     float tentative_g_score = total_pathfinding_cost_to_neighbor;
 
                     // Is the neighbour already in the open set?
