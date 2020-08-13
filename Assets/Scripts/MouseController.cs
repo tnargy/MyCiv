@@ -72,10 +72,13 @@ public class MouseController : MonoBehaviour
 
     private void SelectMapObject(Hex hex)
     {
+        if (hex == null)
+            return;
+
         Unit[] units = hex.Units;
         City city = hex.City;
 
-        if (units != null)
+        if (units != null && units.Length > 0)
         {
             objIndex++;
             if (objIndex == units.Length)
@@ -108,7 +111,7 @@ public class MouseController : MonoBehaviour
 
     private void SelectCity()
     {
-        throw new NotImplementedException();
+        Debug.LogWarning("Not Implemented");
     }
 
     void Update_UnitMovement()

@@ -156,7 +156,7 @@ public class Unit : MapObject, IQPathUnit
         {
             Hex.AddCity();
             // Use up all your movement
-            Movement = 0;
+            MovementRemaining = 0;
         }
     }
 }

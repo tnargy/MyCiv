@@ -66,6 +66,15 @@ public class GameController : MonoBehaviour
     {
         foreach (Unit unit in units)
         {
+            if (unit.UnitWaitingForOrders())
+            {
+                Camera.main.GetComponent<CameraMotion>().MoveToHex(unit.Hex);
+                return;
+            }
+        }
+
+        foreach (Unit unit in units)
+        {
             unit.RefreshMovement();
         }
         _ = StartCoroutine(DoAllUnitMoves());

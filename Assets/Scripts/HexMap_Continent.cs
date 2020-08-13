@@ -65,6 +65,7 @@ public class HexMap_Continent : HexMap
 
         UpdateHexVisuals();
         SpawnPlayer();
+        SpawnPlayer(false);
     }
 
     private void SpawnPlayer(bool zoomCamera = true)
