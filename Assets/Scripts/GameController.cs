@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour
     public GameObject UnitWarriorPrefab;
     public Dictionary<Unit, GameObject> unitToGameObjectMap;
     public bool AnimationIsPlaying = false;
-    
+
     private void Awake()
     {
         units = new HashSet<Unit>();
@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space))
         {
             EndTurn();
-        } 
+        }
     }
 
     private void Start()

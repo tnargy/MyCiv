@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MouseController : MonoBehaviour
 {
@@ -8,7 +7,9 @@ public class MouseController : MonoBehaviour
     Vector3 lastMousePosition;
     Hex[] hexPath;
     public Unit SelectedUnit;
+    public City SelectedCity;
     public GameObject UnitSelectedPanel;
+    public GameObject CitySelectedPanel;
 
     delegate void UpdateFunc();
     UpdateFunc Update_CurrentFunc;
@@ -21,6 +22,7 @@ public class MouseController : MonoBehaviour
     {
         GM = FindObjectOfType<GameController>();
         UnitSelectedPanel.SetActive(false);
+        CitySelectedPanel.SetActive(false);
 
         hexMap = FindObjectOfType<HexMap>();
         lineRenderer = transform.GetComponentInChildren<LineRenderer>();
@@ -48,7 +50,9 @@ public class MouseController : MonoBehaviour
         Update_CurrentFunc = Update_DetectModeStart;
         ClearPath();
         UnitSelectedPanel.SetActive(false);
+        CitySelectedPanel.SetActive(false);
         SelectedUnit = null;
+        SelectedCity = null;
     }
 
     void Update_DetectModeStart()
@@ -61,7 +65,7 @@ public class MouseController : MonoBehaviour
         {
             Update_CurrentFunc = Update_UnitMovement;
         }
-        else if (Input.GetMouseButton(0) && Vector3.Distance(Input.mousePosition, lastMousePosition) > 2f)
+        else if (SelectedCity == null && Input.GetMouseButton(0) && Vector3.Distance(Input.mousePosition, lastMousePosition) > 2f)
         {
             Update_CurrentFunc = Update_CameraDrag;
             lastMouseGroundPlanePosition = GetHitPos();
@@ -83,19 +87,18 @@ public class MouseController : MonoBehaviour
             if (objIndex == units.Length)
             {
                 if (city != null)
-                    SelectCity();
+                    SelectCity(city);
                 objIndex = -1;
             }
             else
                 SelectUnit(units, objIndex);
         }
-        else if(city != null)
+        else if (city != null)
         {
-            SelectCity();
+            SelectCity(city);
         }
         else
         {
-            ResetUpdateFunc();
             ClearUI();
             objIndex = -1;
         }
@@ -103,14 +106,20 @@ public class MouseController : MonoBehaviour
 
     void SelectUnit(Unit[] unit, int objIndex)
     {
+        SelectedCity = null;
         SelectedUnit = unit[objIndex];
         UnitSelectedPanel.SetActive(true);
+        CitySelectedPanel.SetActive(false);
         hexPath = SelectedUnit.GetHexPath() ?? null;
     }
 
-    private void SelectCity()
+    private void SelectCity(City city)
     {
-        Debug.LogWarning("Not Implemented");
+        ClearUI();
+        SelectedCity = city;
+        SelectedUnit = null;
+        CitySelectedPanel.SetActive(true);
+        UnitSelectedPanel.SetActive(false);
     }
 
     void Update_UnitMovement()

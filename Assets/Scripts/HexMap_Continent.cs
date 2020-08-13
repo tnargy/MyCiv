@@ -8,7 +8,7 @@ public class HexMap_Continent : HexMap
     override public void GenerateMap()
     {
         base.GenerateMap();
-        
+
         // Create Continents above sea level
         int continentSpacing = MapX / numContinents;
         for (int c = 0; c < numContinents; c++)
