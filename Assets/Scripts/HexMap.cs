@@ -265,4 +265,27 @@ public class HexMap : MonoBehaviour, IQPathWorld
         }
         return null;
     }
+
+    public void SpawnPlayer(bool zoomCamera = true)
+    {
+        bool respawn = true;
+        Hex spawnHex = GetHexAt(0, 0);
+        while (respawn)
+        {
+            respawn = false;
+            spawnHex = GetHexAt(Random.Range(2, MapX - 2), Random.Range(2, MapY - 2));
+            Hex[] spawnArea = GetHexesWithinRangeOf(spawnHex, 2);
+            foreach (Hex h in spawnArea)
+            {
+                if (h.Elevation < HeightFlat)
+                    respawn = true;
+            }
+            if (spawnHex.Terrain != Hex.TERRAINTYPE.Plains || spawnHex.isHill)
+                respawn = true;
+        }
+        GM.SpawnUnitAt(UNITTYPE.Warrior, spawnHex, GetGameObjectFromHex(spawnHex).transform);
+        if (zoomCamera)
+            Camera.main.GetComponent<CameraMotion>().MoveToHex(spawnHex);
+    }
+
 }

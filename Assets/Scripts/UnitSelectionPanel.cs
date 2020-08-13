@@ -18,6 +18,13 @@ public class UnitSelectionPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Hotkey for Actions
+        if (Input.GetKeyUp(KeyCode.B) && BuildCityAction.activeSelf)
+        {
+            // Build City
+            BuildCity();
+        }
+
         if (mouseController.SelectedUnit != null)
         {
             SelectedUnit.text = $"Selected Unit: {mouseController.SelectedUnit.Name}";
