@@ -15,11 +15,11 @@ public class HexMap : MonoBehaviour, IQPathWorld
     public Mesh MeshHill;
     public Mesh MeshMountain;
 
-    public Material MatOcean;
-    public Material MatPlains;
+    public Material MatDesert;
     public Material MatGrasslands;
     public Material MatMountain;
-    public Material MatDesert;
+    public Material MatOcean;
+    public Material MatPlains;
 
     public static float mapHeightLimit;
     public int MapX = 60, MapY = 30;
