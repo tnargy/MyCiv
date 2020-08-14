@@ -48,14 +48,14 @@ public class GameController : MonoBehaviour
         Application.Quit();
         Debug.Log("Game is exiting");
     }
-    IEnumerator DoAllUnitMoves()
+    public void DoAllUnitMoves()
     {
         if (units != null)
         {
             // Move all Units
             foreach (Unit unit in units)
             {
-                yield return DoUnitMoves(unit);
+                StartCoroutine(DoUnitMoves(unit));
             }
         }
     }
@@ -89,8 +89,6 @@ public class GameController : MonoBehaviour
             }
         }
 
-        _ = StartCoroutine(DoAllUnitMoves());
-
         foreach (Unit unit in units)
         {
             unit.RefreshMovement();
@@ -100,6 +98,8 @@ public class GameController : MonoBehaviour
         {
             city.DoTurn();
         }
+
+        DoAllUnitMoves();
     }
 
     public void SpawnPlayer(int playerIndex, bool zoomCamera = true)
