@@ -228,10 +228,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5d0627c9998eb445a1f407940cc5972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GM: {fileID: 0}
   HexPrefab: {fileID: 7899946127616637648, guid: efaa5346ed12108418eec6edb2b727b3, type: 3}
   ForestPrefab: {fileID: 2851355596070361375, guid: 3843d302730dded47bcd0a5897d8e778, type: 3}
   JunglePrefab: {fileID: 2851355596070361375, guid: 3843d302730dded47bcd0a5897d8e778, type: 3}
-  VilliagePrefab: {fileID: 709686705084064329, guid: 193983f1f0de128469863a53ce610039, type: 3}
   MeshWater: {fileID: 2534964839176971238, guid: 423248a10129ebf4a9e16308bad6ad12, type: 3}
   MeshFlat: {fileID: 2534964839176971238, guid: 423248a10129ebf4a9e16308bad6ad12, type: 3}
   MeshHill: {fileID: 2534964839176971238, guid: 816c44c0f6ff28942abc16ecca8a8b31, type: 3}
@@ -276,8 +276,9 @@ GameObject:
   - component: {fileID: 73571704}
   - component: {fileID: 73571706}
   - component: {fileID: 73571705}
+  - component: {fileID: 73571707}
   m_Layer: 5
-  m_Name: City
+  m_Name: CitySelection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -342,6 +343,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 73571703}
   m_CullTransparentMesh: 0
+--- !u!114 &73571707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 73571703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43afbfec6b210124198c0f4e5eafdfbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: {fileID: 1757560036}
+  ProductionPanel: {fileID: 24648112}
 --- !u!1 &78559597
 GameObject:
   m_ObjectHideFlags: 0
@@ -966,7 +981,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 371aea8496fe84b49970a0613be3673e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1780,7 +1795,7 @@ GameObject:
   - component: {fileID: 958854751}
   - component: {fileID: 958854750}
   m_Layer: 5
-  m_Name: SelectedUnit
+  m_Name: Production
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1825,7 +1840,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Current Item: \nUnit \nProduction: 10/9001 \nTurns: 99"
+  m_text: "Current Item: \nWarrior \nProduction: 10/9001 \nTurns: 99"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2113,7 +2128,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 371aea8496fe84b49970a0613be3673e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3469,6 +3484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UnitWarriorPrefab: {fileID: 4833540871313221866, guid: 2cbf7f6e09dfc9e49952228f35e0b9ab, type: 3}
+  VilliagePrefab: {fileID: 709686705084064329, guid: 193983f1f0de128469863a53ce610039, type: 3}
   AnimationIsPlaying: 0
 --- !u!4 &1649206671
 Transform:
@@ -4176,7 +4192,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 7.000005, y: 0}
+  m_AnchoredPosition: {x: 0.0000009536743, y: 0}
   m_SizeDelta: {x: -7.000001, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1972705719
@@ -4382,6 +4398,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a292fc2157dfd0a488214fb22897a3e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 256
   UnitSelectedPanel: {fileID: 1265214156}
   CitySelectedPanel: {fileID: 73571703}
 --- !u!4 &2061444899

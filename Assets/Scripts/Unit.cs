@@ -5,6 +5,7 @@ using UnityEngine;
 public class Unit : MapObject, IQPathUnit
 {
     public float Movement, MovementRemaining;
+    public enum UNITTYPE { Warrior };
     public UNITTYPE UnitType;
     private Queue<Hex> hexPath;
 

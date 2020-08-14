@@ -95,12 +95,12 @@ public class Hex : IQPathTile
     public void AddCity()
     {
         City = new City(this, "Tulsa");
-        HexMap.AddCity(City);
+        HexMap.GM.AddCity(City);
     }
 
     public void RemoveCity()
     {
-        HexMap.RemoveCity(City);
+        HexMap.GM.RemoveCity(City);
         City = null;
     }
 

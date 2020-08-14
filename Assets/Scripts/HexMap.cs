@@ -5,11 +5,10 @@ using UnityEngine;
 
 public class HexMap : MonoBehaviour, IQPathWorld
 {
-    protected GameController GM;
+    public GameController GM;
     public GameObject HexPrefab;
     public GameObject ForestPrefab;
     public GameObject JunglePrefab;
-    public GameObject VilliagePrefab;
 
     public Mesh MeshWater;
     public Mesh MeshFlat;
@@ -24,14 +23,13 @@ public class HexMap : MonoBehaviour, IQPathWorld
 
     public static float mapHeightLimit;
     public int MapX = 60, MapY = 30;
-    public float HeightMountain = 0.85f, HeightHill = 0.6f, HeightFlat = 0f;
-    public float MoistureJungle = 0.66f, MoistureForest = 0.33f;
-    public float MoistureGrasslands = 0f, MoisturePlains = -0.5f;
+
+    [HideInInspector] public float HeightMountain = 0.85f, HeightHill = 0.6f, HeightFlat = 0f;
+    [HideInInspector] public float MoistureJungle = 0.66f, MoistureForest = 0.33f;
+    [HideInInspector] public float MoistureGrasslands = 0f, MoisturePlains = -0.5f;
     private Hex[,] hexes;
-    private HashSet<City> cities;
 
     private Dictionary<Hex, GameObject> hexToGameObjectMap;
-    private Dictionary<City, GameObject> cityToGameObjectMap;
     private Dictionary<GameObject, Hex> gameObjectToHexMap;
 
 
@@ -39,7 +37,6 @@ public class HexMap : MonoBehaviour, IQPathWorld
     {
         GM = FindObjectOfType<GameController>();
         hexToGameObjectMap = new Dictionary<Hex, GameObject>();
-        cityToGameObjectMap = new Dictionary<City, GameObject>();
         gameObjectToHexMap = new Dictionary<GameObject, Hex>();
 
         GenerateMap();
@@ -74,7 +71,6 @@ public class HexMap : MonoBehaviour, IQPathWorld
     virtual public void GenerateMap()
     {
         hexes = new Hex[MapX, MapY];
-        cities = new HashSet<City>();
 
         // Generate Ocean Map
         for (int col = 0; col < MapX; col++)
@@ -204,30 +200,6 @@ public class HexMap : MonoBehaviour, IQPathWorld
         }
     }
 
-    public void AddCity(City city)
-    {
-        Transform hexTransform = GetGameObjectFromHex(city.Hex).transform;
-        Vector3 spawnLocation = hexTransform.position;
-        if (city.Hex.isHill)
-            spawnLocation.Set(hexTransform.position.x, hexTransform.position.y + 0.15f, hexTransform.position.z);
-
-        GameObject cityObj = Instantiate(
-            VilliagePrefab,
-            spawnLocation,
-            Quaternion.identity,
-            hexTransform);
-        cityObj.GetComponentInChildren<TextMeshProUGUI>().text = city.Name;
-
-        cityToGameObjectMap.Add(city, cityObj);
-        cities.Add(city);
-    }
-
-    public void RemoveCity(City city)
-    {
-        cityToGameObjectMap.Remove(city);
-        cities.Remove(city);
-    }
-
     public Hex[] GetHexesWithinRangeOf(Hex center, int range)
     {
         List<Hex> results = new List<Hex>();
@@ -249,14 +221,7 @@ public class HexMap : MonoBehaviour, IQPathWorld
         }
         return null;
     }
-    public GameObject GetGameObjectFromCity(City c)
-    {
-        if (cityToGameObjectMap.ContainsKey(c))
-        {
-            return cityToGameObjectMap[c];
-        }
-        return null;
-    }
+
     public Hex GetHexFromGameObject(GameObject gObj)
     {
         if (gameObjectToHexMap.ContainsKey(gObj))
@@ -265,27 +230,4 @@ public class HexMap : MonoBehaviour, IQPathWorld
         }
         return null;
     }
-
-    public void SpawnPlayer(bool zoomCamera = true)
-    {
-        bool respawn = true;
-        Hex spawnHex = GetHexAt(0, 0);
-        while (respawn)
-        {
-            respawn = false;
-            spawnHex = GetHexAt(Random.Range(2, MapX - 2), Random.Range(2, MapY - 2));
-            Hex[] spawnArea = GetHexesWithinRangeOf(spawnHex, 2);
-            foreach (Hex h in spawnArea)
-            {
-                if (h.Elevation < HeightFlat)
-                    respawn = true;
-            }
-            if (spawnHex.Terrain != Hex.TERRAINTYPE.Plains || spawnHex.isHill)
-                respawn = true;
-        }
-        GM.SpawnUnitAt(UNITTYPE.Warrior, spawnHex, GetGameObjectFromHex(spawnHex).transform);
-        if (zoomCamera)
-            Camera.main.GetComponent<CameraMotion>().MoveToHex(spawnHex);
-    }
-
 }

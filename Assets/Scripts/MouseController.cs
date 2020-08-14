@@ -8,6 +8,7 @@ public class MouseController : MonoBehaviour
     Hex[] hexPath;
     public Unit SelectedUnit;
     public City SelectedCity;
+    public LayerMask layerMask;
     public GameObject UnitSelectedPanel;
     public GameObject CitySelectedPanel;
 
@@ -195,7 +196,7 @@ public class MouseController : MonoBehaviour
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitInfo;
 
-        if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, LayerMask.GetMask("HexTile")))
+        if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, layerMask))
         {
             GameObject hexObj = hitInfo.rigidbody.gameObject;
             Hex hex = hexMap.GetHexFromGameObject(hexObj);
