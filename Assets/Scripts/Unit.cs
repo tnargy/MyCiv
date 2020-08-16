@@ -58,11 +58,11 @@ public class Unit : MapObject, IQPathUnit
 
     public bool UnitWaitingForOrders()
     {
-        if ((hexPath == null || hexPath.Count == 0) && MovementRemaining > 0)
+        if ((hexPath == null || hexPath.Count == 0) && MovementRemaining > 0 & !SkipTurn)
         {
-            // TODO: Fortify/Alert/SkipTurn
             return true;
         }
+
         return false;
     }
 

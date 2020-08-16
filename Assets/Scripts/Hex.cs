@@ -98,12 +98,6 @@ public class Hex : IQPathTile
         HexMap.GM.AddCity(City);
     }
 
-    public void RemoveCity()
-    {
-        HexMap.GM.RemoveCity(City);
-        City = null;
-    }
-
     public float BaseMovementCost()
     {
         float baseMovement;

@@ -1,32 +1,20 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     // TODO: Seperate unit list per player
-    private HashSet<Unit> units;
-    private HashSet<City> cities;
+    public int numPlayers = 1;
+    public Player[] Players;
+    public Player CurrentPlayer { get => Players[currentPlayerIndex]; }
+    private int currentPlayerIndex = 0;
 
     public GameObject UnitWarriorPrefab;
     public GameObject VilliagePrefab;
 
-    private Dictionary<Unit, GameObject> unitToGameObjectMap;
-    private Dictionary<City, GameObject> cityToGameObjectMap;
-    public bool AnimationIsPlaying = false;
     private HexMap hexMap;
-
-
-    private void Awake()
-    {
-        units = new HashSet<Unit>();
-        unitToGameObjectMap = new Dictionary<Unit, GameObject>();
-
-        cities = new HashSet<City>();
-        cityToGameObjectMap = new Dictionary<City, GameObject>();
-
-    }
+    public bool AnimationIsPlaying = false;
 
     private void Update()
     {
@@ -40,7 +28,17 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         hexMap = GameObject.Find("HexMap").GetComponent<HexMap>();
-        SpawnPlayer(0);
+        GeneratePlayers();
+    }
+
+    private void GeneratePlayers()
+    {
+        Players = new Player[numPlayers];
+        for (int i = 0; i < numPlayers; i++)
+        {
+            Players[i] = new Player("Player1");
+            SpawnPlayer(i == 0);
+        }
     }
 
     public void QuitGame()
@@ -50,16 +48,15 @@ public class GameController : MonoBehaviour
     }
     public void DoAllUnitMoves()
     {
-        if (units != null)
+        if (CurrentPlayer.Units != null)
         {
             // Move all Units
-            foreach (Unit unit in units)
+            foreach (Unit unit in CurrentPlayer.Units)
             {
                 StartCoroutine(DoUnitMoves(unit));
             }
         }
     }
-
     public IEnumerator DoUnitMoves(Unit unit)
     {
         while (unit.DoMove())
@@ -67,6 +64,24 @@ public class GameController : MonoBehaviour
             while (AnimationIsPlaying)
                 yield return null;
         }
+    }
+
+    public void DoAllCityWork()
+    {
+        if (CurrentPlayer.Cities != null)
+        {
+            // Move all Units
+            foreach (City city in CurrentPlayer.Cities)
+            {
+                StartCoroutine(DoCityTurn(city));
+            }
+        }
+    }
+
+    public IEnumerator DoCityTurn(City city)
+    {
+        city.DoTurn();
+        yield return null;
     }
 
     /// <summary>
@@ -80,29 +95,27 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void EndTurn()
     {
-        foreach (Unit unit in units)
+        foreach (Unit unit in CurrentPlayer.Units)
         {
             if (unit.UnitWaitingForOrders())
             {
+                unit.SkipTurn = true;
                 Camera.main.GetComponent<CameraMotion>().MoveToHex(unit.Hex);
                 return;
             }
         }
 
-        foreach (Unit unit in units)
+        foreach (Unit unit in CurrentPlayer.Units)
         {
             unit.RefreshMovement();
         }
 
-        foreach (City city in cities)
-        {
-            city.DoTurn();
-        }
-
         DoAllUnitMoves();
+        DoAllCityWork();
+        currentPlayerIndex = (currentPlayerIndex + 1) % Players.Length;
     }
 
-    public void SpawnPlayer(int playerIndex, bool zoomCamera = true)
+    public void SpawnPlayer(bool zoomCamera = true)
     {
         bool respawn = true;
         Hex spawnHex = hexMap.GetHexAt(0, 0);
@@ -146,8 +159,7 @@ public class GameController : MonoBehaviour
 
         unit.SetHex(h);
         unit.OnObjectMoved += unitObj.GetComponent<MapObjectView>().OnObjectMoved;
-        unitToGameObjectMap.Add(unit, unitObj);
-        units.Add(unit);
+        CurrentPlayer.AddUnit(unit, unitObj);
     }
 
     private GameObject GetPrefabForType(Unit.UNITTYPE unitType)
@@ -165,7 +177,7 @@ public class GameController : MonoBehaviour
     {
         Transform hexTransform = hexMap.GetGameObjectFromHex(city.Hex).transform;
         Vector3 spawnLocation = hexTransform.position;
-        if (city.Hex.isHill)
+        if (city.Hex.isHill)   // Move city offset to account for hill
             spawnLocation.Set(hexTransform.position.x, hexTransform.position.y + 0.15f, hexTransform.position.z);
 
         GameObject cityObj = Instantiate(
@@ -175,13 +187,6 @@ public class GameController : MonoBehaviour
             hexTransform);
         cityObj.GetComponentInChildren<TextMeshProUGUI>().text = city.Name;
 
-        cityToGameObjectMap.Add(city, cityObj);
-        cities.Add(city);
-    }
-
-    public void RemoveCity(City city)
-    {
-        cityToGameObjectMap.Remove(city);
-        cities.Remove(city);
+        CurrentPlayer.AddCity(city, cityObj);
     }
 }

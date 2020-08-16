@@ -32,7 +32,7 @@ public class MapObjectView : MonoBehaviour
         HexMap hexMap = oldHex.HexMap;
         transform.position = hexMap.PositionFromCamera(oldHex);
         newPosition = hexMap.PositionFromCamera(newHex);
-        if (newHex.isHill)
+        if (newHex.isHill)  // Move the Unit up slightly to account for hill
             newPosition.Set(newPosition.x, newPosition.y + 0.15f, newPosition.z);
         currentVelocity = Vector3.zero;
 
