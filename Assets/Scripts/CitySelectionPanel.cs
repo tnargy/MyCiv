@@ -28,6 +28,18 @@ public class CitySelectionPanel : MonoBehaviour
 
     public void Production()
     {
-        throw new NotImplementedException();
+        City city = mouseController.SelectedCity;
+        city.currentProduction = City.PRODUCTION.BUSY;
+        Unit unit = new Unit("Unnamed", 100, 8, 2f, Unit.UNITTYPE.Warrior);
+        Sprite icon = Resources.Load<Sprite>("Icons/Unit.Warrior");
+        city.buildingJob = new BuildingJob(icon,
+                       "Warrior",
+                       100,
+                       city.workLeft,
+                       () =>
+                       {
+                           GameObject.Find("GameController").GetComponent<GameController>().SpawnUnitAt(unit, city.Hex);
+                           city.currentProduction = City.PRODUCTION.IDLE;
+                       });
     }
 }
