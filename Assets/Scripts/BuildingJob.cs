@@ -6,8 +6,8 @@ public class BuildingJob
 
     public float TotalProductionNeeded, CurrentProductinDone;
 
-    public Sprite icon;
-    public string name;
+    public Sprite Icon;
+    public string Name;
 
     public delegate void ProductionCompleteDelegate();
     public ProductionCompleteDelegate OnProductionComplete;
@@ -15,12 +15,11 @@ public class BuildingJob
     public BuildingJob(Sprite icon,
                        string name,
                        float totalProductionNeeded,
-                       float overflowProduction,
                        ProductionCompleteDelegate OnProductionComplete)
     {
-        TotalProductionNeeded = totalProductionNeeded + overflowProduction;
-        this.icon = icon ?? throw new ArgumentNullException(nameof(icon));
-        this.name = name ?? throw new ArgumentNullException(nameof(name));
+        TotalProductionNeeded = totalProductionNeeded;
+        Icon = icon;
+        Name = name;
         this.OnProductionComplete = OnProductionComplete ?? throw new ArgumentNullException(nameof(OnProductionComplete));
     }
 

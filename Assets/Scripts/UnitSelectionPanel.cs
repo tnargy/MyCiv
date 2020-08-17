@@ -44,6 +44,15 @@ public class UnitSelectionPanel : MonoBehaviour
 
     public void BuildCity()
     {
-        mouseController.SelectedUnit.BuildCity();
+        // string cityName = GetName(GameObject.Find("Middle").GetComponent<Canvas>(), GameObject.Find("Middle").GetComponent<Rename>());
+        mouseController.SelectedUnit.BuildCity("Tulsa");
+    }
+
+    private string GetName(Canvas canvas, Rename rename)
+    {
+        canvas.enabled = true;
+        if (rename.input == rename.inputField.text && rename.input == "")
+            return GetName(canvas, rename);
+        return rename.input;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MouseController : MonoBehaviour
 {
@@ -32,6 +33,9 @@ public class MouseController : MonoBehaviour
 
     private void Update()
     {
+        if (GameObject.Find("Middle").GetComponent<Canvas>().enabled)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Escape))
             ClearUI();
         if (hexPath != null)
@@ -198,6 +202,11 @@ public class MouseController : MonoBehaviour
 
         if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, layerMask))
         {
+            if (EventSystem.current.currentSelectedGameObject != null)
+            {
+                // Debug.Log(EventSystem.current.currentSelectedGameObject.name);
+                return null;
+            }
             GameObject hexObj = hitInfo.rigidbody.gameObject;
             Hex hex = hexMap.GetHexFromGameObject(hexObj);
 

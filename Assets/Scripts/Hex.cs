@@ -92,9 +92,9 @@ public class Hex : IQPathTile
             units.Remove(unit);
     }
 
-    public void AddCity()
+    public void AddCity(string input)
     {
-        City = new City(this, "Tulsa");
+        City = new City(this, input);
         HexMap.GM.AddCity(City);
     }
 

@@ -15,6 +15,9 @@ public class CameraMotion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameObject.Find("Middle").GetComponent<Canvas>().enabled)
+            return;
+
         // Clamp the NORTH/SOUTH movement of camera
         transform.position = new Vector3(
             transform.position.x,

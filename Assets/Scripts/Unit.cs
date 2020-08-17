@@ -54,6 +54,7 @@ public class Unit : MapObject, IQPathUnit
     internal void RefreshMovement()
     {
         MovementRemaining = Movement;
+        SkipTurn = false;
     }
 
     public bool UnitWaitingForOrders()
@@ -151,11 +152,11 @@ public class Unit : MapObject, IQPathUnit
         return 1f;
     }
 
-    public void BuildCity()
+    public void BuildCity(string input)
     {
         if (UnitWaitingForOrders())
         {
-            Hex.AddCity();
+            Hex.AddCity(input);
             // Use up all your movement
             MovementRemaining = 0;
         }
