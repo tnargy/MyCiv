@@ -5,6 +5,7 @@ public class Rename : MonoBehaviour
 {
     public string input;
     public TMP_InputField inputField;
+    public bool wait;
 
     // Start is called before the first frame update
     void Start()
@@ -17,5 +18,6 @@ public class Rename : MonoBehaviour
         input = inputField.text;
         inputField.text = null;
         gameObject.GetComponent<Canvas>().enabled = false;
+        wait = false;
     }
 }
