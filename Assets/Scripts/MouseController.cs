@@ -89,7 +89,7 @@ public class MouseController : MonoBehaviour
         if (units != null && units.Length > 0)
         {
             objIndex++;
-            if (objIndex == units.Length)
+            if (objIndex >= units.Length)
             {
                 if (city != null)
                     SelectCity(city);

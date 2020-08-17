@@ -21,6 +21,9 @@ public class City : MapObject
 
     public void DoTurn()
     {
+        if (BuildingJob != null)
+            currentProduction = PRODUCTION.BUSY;
+
         if (currentProduction == PRODUCTION.BUSY)
         {
             workLeft = BuildingJob.DoWork(productionPerTurn);
@@ -31,7 +34,6 @@ public class City : MapObject
     {
         if (currentProduction != PRODUCTION.BUSY)
         {
-            currentProduction = PRODUCTION.BUSY;
             BuildingJob = BuildingJobsList[index];
             BuildingJob.TotalProductionNeeded -= workLeft;
         }

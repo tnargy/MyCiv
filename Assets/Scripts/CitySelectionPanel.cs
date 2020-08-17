@@ -44,7 +44,7 @@ public class CitySelectionPanel : MonoBehaviour
                 jobCount = city.BuildingJobsList.Count;
             }
 
-            if (city.BuildingJob != null && city.currentProduction == City.PRODUCTION.BUSY)
+            if (city.BuildingJob != null)
             {
                 ProductionPanel.SetActive(true);
                 Transform content = ProductionPanel.transform.Find("Content").transform;
