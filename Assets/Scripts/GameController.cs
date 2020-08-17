@@ -10,11 +10,19 @@ public class GameController : MonoBehaviour
     public Player CurrentPlayer { get => Players[currentPlayerIndex]; }
     private int currentPlayerIndex = 0;
 
-    public GameObject UnitWarriorPrefab;
-    public GameObject VilliagePrefab;
+    private GameObject UnitWarriorPrefab;
+    private GameObject UnitSettlerPrefab;
+    private GameObject VillagePrefab;
 
     private HexMap hexMap;
     public bool AnimationIsPlaying = false;
+
+    private void Awake()
+    {
+        UnitWarriorPrefab = (GameObject)Resources.Load("Prefabs/Unit.warrior");
+        UnitSettlerPrefab = (GameObject)Resources.Load("Prefabs/Unit.settler");
+        VillagePrefab = (GameObject)Resources.Load("Prefabs/City.village");
+    }
 
     private void Update()
     {
@@ -132,14 +140,23 @@ public class GameController : MonoBehaviour
             if (spawnHex.Terrain != Hex.TERRAINTYPE.Plains || spawnHex.isHill)
                 respawn = true;
         }
-        Unit unit = new Unit("Warrior", 100, 8, 2f, Unit.UNITTYPE.Warrior)
+        Unit warrior = new Unit("Warrior", 100, 8, 2f, Unit.UNITTYPE.Warrior);
+        Unit settler = new Unit("Settler", 100, 0, 2f, Unit.UNITTYPE.Settler)
         {
             CanBuildCities = true
         };
 
-        SpawnUnitAt(unit, spawnHex);
+        SpawnUnitsAt(new Unit[]{ warrior,settler}, spawnHex);
         if (zoomCamera)
             Camera.main.GetComponent<CameraMotion>().MoveToHex(spawnHex);
+    }
+
+    public void SpawnUnitsAt(Unit[] units, Hex h)
+    {
+        foreach (var unit in units)
+        {
+            SpawnUnitAt(unit, h);
+        }
     }
 
     public void SpawnUnitAt(Unit unit, Hex h)
@@ -159,6 +176,12 @@ public class GameController : MonoBehaviour
 
         unit.SetHex(h);
         unit.OnObjectMoved += unitObj.GetComponent<MapObjectView>().OnObjectMoved;
+        unit.OnObjectDestroyed += () =>
+        {
+            h.RemoveUnit(unit);
+            Destroy(CurrentPlayer.UnitToGameObjectMap[unit]);
+            CurrentPlayer.RemoveUnit(unit);
+        };
         CurrentPlayer.AddUnit(unit, unitObj);
     }
 
@@ -168,6 +191,8 @@ public class GameController : MonoBehaviour
         {
             case Unit.UNITTYPE.Warrior:
                 return UnitWarriorPrefab;
+            case Unit.UNITTYPE.Settler:
+                return UnitSettlerPrefab;
             default:
                 return null;
         }
@@ -181,7 +206,7 @@ public class GameController : MonoBehaviour
             spawnLocation.Set(hexTransform.position.x, hexTransform.position.y + 0.15f, hexTransform.position.z);
 
         GameObject cityObj = Instantiate(
-            VilliagePrefab,
+            VillagePrefab,
             spawnLocation,
             Quaternion.identity,
             hexTransform);

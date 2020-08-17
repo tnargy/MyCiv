@@ -5,7 +5,7 @@ using UnityEngine;
 public class Unit : MapObject, IQPathUnit
 {
     public float Movement, MovementRemaining;
-    public enum UNITTYPE { Warrior };
+    public enum UNITTYPE { Warrior, Settler };
     public UNITTYPE UnitType;
     private Queue<Hex> hexPath;
 
@@ -157,8 +157,7 @@ public class Unit : MapObject, IQPathUnit
         if (UnitWaitingForOrders())
         {
             Hex.AddCity(cityName);
-            // Use up all your movement
-            MovementRemaining = 0;
+            Destroy();
         }
     }
 }

@@ -23,6 +23,7 @@ public class Player
 
     public Unit[] Units { get => units.ToArray(); }
     public City[] Cities { get => cities.ToArray(); }
+    public Dictionary<Unit, GameObject> UnitToGameObjectMap { get => unitToGameObjectMap; }
 
     public void AddUnit(Unit unit, GameObject unitObj)
     {
@@ -34,5 +35,17 @@ public class Player
     {
         cities.Add(city);
         cityToGameObjectMap.Add(city, cityObj);
+    }
+    
+    public void RemoveUnit(Unit unit)
+    {
+        units.Remove(unit);
+        unitToGameObjectMap.Remove(unit);
+    }
+
+    public void RemoveCity(City city)
+    {
+        cities.Remove(city);
+        cityToGameObjectMap.Remove(city);
     }
 }

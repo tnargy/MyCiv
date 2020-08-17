@@ -59,6 +59,7 @@
     <Compile Include="Assets\Scripts\City.cs" />
     <Compile Include="Assets\Scripts\QPath\PriorityQueue.cs" />
     <Compile Include="Assets\Scripts\MouseController.cs" />
+    <Compile Include="Assets\Scripts\BuildingJob.cs" />
     <Compile Include="Assets\Scripts\UnitSelectionPanel.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\IPriorityQueue.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
@@ -77,14 +78,15 @@
     <Compile Include="Assets\Scripts\QPath\Priority Queue\Properties\AssemblyInfo.cs" />
     <Compile Include="Assets\Scripts\HexMap.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\StablePriorityQueueNode.cs" />
+    <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\HexMap_Continent.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\StablePriorityQueue.cs" />
+    <Compile Include="Assets\Scripts\CitySelectionPanel.cs" />
     <Compile Include="Assets\Scripts\MapObject.cs" />
     <Compile Include="Assets\Scripts\QPath\IQPathUnit.cs" />
     <Compile Include="Assets\Scripts\QPath\Priority Queue\GenericPriorityQueueNode.cs" />
     <Compile Include="Assets\Scripts\QPath\IQPathTile.cs" />
-    <Compile Include="Assets\Scripts\CitySelectionPanel.cs" />
-    <Compile Include="Assets\Scripts\BuildingJob.cs" />
+    <Compile Include="Assets\Scripts\Rename.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

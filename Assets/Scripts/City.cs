@@ -42,9 +42,24 @@ public class City : MapObject
     {
         BuildingJobsList = new List<BuildingJob>();
 
+        // Settler
+        var job = new BuildingJob(Resources.Load<Sprite>("Icons/Unit.Warrior"),
+                       "Settler",
+                       2,
+                       () =>    // OnCompleteFunc
+                       {
+                           Unit unit = new Unit("Settler", 100, 0, 2f, Unit.UNITTYPE.Settler)
+                           {
+                               CanBuildCities = true
+                           };
+                           GameObject.Find("GameController").GetComponent<GameController>().SpawnUnitAt(unit, Hex);
+                           currentProduction = PRODUCTION.IDLE;
+                           BuildingJob = null;
+                       });
+        BuildingJobsList.Add(job);
+        
         // Warrior
-        Sprite icon = Resources.Load<Sprite>("Icons/Unit.Warrior");
-        var job = new BuildingJob(icon,
+        job = new BuildingJob(Resources.Load<Sprite>("Icons/Unit.Warrior"),
                        "Warrior",
                        5,
                        () =>    // OnCompleteFunc
@@ -55,5 +70,7 @@ public class City : MapObject
                            BuildingJob = null;
                        });
         BuildingJobsList.Add(job);
+
+
     }
 }
