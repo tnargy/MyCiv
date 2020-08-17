@@ -47,7 +47,7 @@ public class City : MapObject
         var job = new BuildingJob(icon,
                        "Warrior",
                        5,
-                       () =>
+                       () =>    // OnCompleteFunc
                        {
                            Unit unit = new Unit("Warrior", 100, 8, 2f, Unit.UNITTYPE.Warrior);
                            GameObject.Find("GameController").GetComponent<GameController>().SpawnUnitAt(unit, Hex);

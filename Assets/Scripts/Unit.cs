@@ -152,11 +152,11 @@ public class Unit : MapObject, IQPathUnit
         return 1f;
     }
 
-    public void BuildCity(string input)
+    public void BuildCity(string cityName)
     {
         if (UnitWaitingForOrders())
         {
-            Hex.AddCity(input);
+            Hex.AddCity(cityName);
             // Use up all your movement
             MovementRemaining = 0;
         }
